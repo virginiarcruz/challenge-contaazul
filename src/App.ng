@@ -1,0 +1,34 @@
+<template>
+  <div id="app" class="color-grey">
+    <header-fixed></header-fixed>
+    <div class="content" ui-view></div>
+  </div>
+</template>
+
+<script>
+import headerFixed from './components/Header'
+
+export default {
+  name: 'app',
+  components: {
+    headerFixed
+  }
+}
+</script>
+
+<style lang="stylus" scoped>
+@import './global'
+
+#app
+  width 100%
+  height 100%
+  display flex
+  flex-direction column
+  background-color $background-color
+
+.content 
+  display flex
+  flex-direction column
+  align-items center
+
+</style>

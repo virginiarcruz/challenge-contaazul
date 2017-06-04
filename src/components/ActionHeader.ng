@@ -1,0 +1,16 @@
+<template>
+    <div class="action" ng-transclude></div>
+</template>
+
+<script>
+    export default {
+        transclude: true
+    }
+</script>
+
+<style lang="stylus">
+    .action 
+        display flex
+        align-items stretch
+        padding 0 10px;
+</style>

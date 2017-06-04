@@ -1,0 +1,22 @@
+<template>
+    <div class="container">
+        <action-header>
+            <button class="btn btn-success">Novo Carro</button>
+            <button class="btn">Excluir</button>
+        </action-header>
+    </div>
+</template>
+
+<script>
+    import actionHeader from 'components/ActionHeader'
+
+    export default {
+        components: { actionHeader }
+    }
+</script>
+
+<style lang="stylus">
+    
+    @import './../../global'
+
+</style>

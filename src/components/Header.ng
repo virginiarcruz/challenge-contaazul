@@ -1,0 +1,19 @@
+<template>
+  <div class="header">
+    <img class="logo" alt="ContaAzul" src="~assets/logo-contaazul.svg">
+  </div>
+</template>
+
+<style lang="stylus" scoped>
+  @import './../global'
+
+  .header
+    display flex
+    align-items center
+    background-color $blue
+    position fixed
+    height 50px
+    width 100%
+    .logo 
+      margin 0 30px
+</style>
