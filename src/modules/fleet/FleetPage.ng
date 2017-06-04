@@ -3,6 +3,13 @@
         <action-header>
             <button class="btn btn-success">Novo Carro</button>
             <button class="btn">Excluir</button>
+
+            <div>
+                <input type="text" placeholder="Pesquisar">
+                <span>
+                    
+                </span>
+            </div>
         </action-header>
     </div>
 </template>
