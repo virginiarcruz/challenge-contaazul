@@ -1,35 +1,78 @@
 $background-color = #F1F4F9
 $blue = rgb(38, 135, 233)
 
+
+@font-face
+  font-family 'Material Icons'
+  font-style normal
+  font-weight 400
+  src url(./assets/MaterialIcons-Regular.woff2) format('woff2')
+
+@font-face
+  font-family 'Roboto'
+  font-style normal
+  font-weight 400
+  src local('Roboto'), local('Roboto-Regular'), url(./assets/Roboto-Regular.woff2) format('woff2')
+
+.material-icons
+  font-family 'Material Icons'
+  font-weight normal
+  font-style normal
+  font-size 22px
+  display inline-block
+  width 1em
+  height 1em
+  color #999
+  line-height 1
+  text-transform none
+  letter-spacing normal
+  word-wrap normal
+  white-space nowrap
+  direction ltr
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale
+  &.medium
+    transform scale(0.9)
+  &.small
+    transform scale(0.8)
+
+.toggle-recording .material-icons
+  color #999 !important
+  &.enabled
+    color red !important
+    text-shadow 0 0 3px rgba(255, 0, 0, .4)
+
+.toggle-private .material-icons
+  color #999 !important
+  &.enabled
+    color #505050 !important
+    text-shadow 0 0 3px rgba(255, 255, 255, 0.4)
+
 .container
     margin-top 75px
     flex 1
     padding 15px
     width 940px
 
-@media (min-width: 544px) {
-    .container {
+@media (min-width: 544px)
+    .container
         max-width:544px
-    }
-}
 
-@media (min-width: 768px) {
-    .container {
+@media (min-width: 768px)
+    .container 
         max-width:768px
-    }
-}
 
-@media (min-width: 992px) {
-    .container {
+@media (min-width: 992px)
+    .container 
         max-width:992px
-    }
-}
 
-@media (min-width: 1200px) {
-    .container {
+@media (min-width: 1200px)
+    .container
         max-width:1200px
-    }
-}
 
 .btn
     background-color #F8FAFC
@@ -48,20 +91,25 @@ $blue = rgb(38, 135, 233)
     cursor pointer
     line-height 1em
     margin-right 10px
-
     &:focus
         outline 0
         box-shadow 0 0 0 2px rgba(139,200,246,0.8)
         z-index 1
-
-
     &.btn-success
         background-color #4ABA58
         border 1px solid #4ABA58
         color #FFFFFF
-
         &:focus
             box-shadow: 0 0 0 2px rgba(153,237,139,0.8)
             background-color: rgba(74,186,88,0.8)
             border: 1px solid #4ABA58
+
+.search
+    display flex
+    align-items center
+    flex 1
+    input
+        flex 1
+        font-size inherit
+
 
