@@ -19,9 +19,6 @@ $input-line-height: 1.25;
 $input-color-placeholder: #9CA5AC;
 $font-size-base: .875rem;
 
-// navbar
-$navbar-padding-x: 3rem;
-
 // button
 $btn-padding-x: 2em;
 
@@ -32,10 +29,6 @@ $btn-padding-x: 2em;
 
 .bg-grey {
     background-color: #f1f4f9;
-}
-
-.navbar-brand {
-    margin: 0 $navbar-padding-x;
 }
 
 .btn {

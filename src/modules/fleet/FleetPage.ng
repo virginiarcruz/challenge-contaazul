@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div>
         <action-header>
             <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar">
