@@ -8,9 +8,8 @@
     }
 </script>
 
-<style lang="stylus">
-    .action 
-        display flex
-        align-items stretch
-        padding 0 10px;
+<style lang="scss" scope>
+    .action {
+        margin: 20px 0;
+    }
 </style>

@@ -1,0 +1,43 @@
+// colors
+$white:  #fff;
+$black:  #000;
+$red:    #d9534f;
+$orange: #f0ad4e;
+$yellow: #ffd500;
+$green:  #5cb85c;
+$blue:   #2687e9;
+$teal:   #5bc0de;
+$pink:   #ff5b77;
+$purple: #613d7c;
+$gray:   #3f5e7b;
+
+// forms
+$input-padding-x:   1rem;
+$input-padding-y:   .7rem;
+$input-line-height: 1.25;
+
+$input-color-placeholder: #9CA5AC;
+$font-size-base: .875rem;
+
+// navbar
+$navbar-padding-x: 3rem;
+
+// button
+$btn-padding-x: 2em;
+
+// backgrounds
+.bg-contaazul {
+    background-color: $blue;
+}
+
+.bg-grey {
+    background-color: #f1f4f9;
+}
+
+.navbar-brand {
+    margin: 0 $navbar-padding-x;
+}
+
+.btn {
+    cursor: pointer;
+}

@@ -58,6 +58,7 @@ exports.cssLoaders = function (options) {
 exports.styleLoaders = function (options) {
   var output = []
   var loaders = exports.cssLoaders(options)
+  console.log(loaders)
   for (var extension in loaders) {
     var loader = loaders[extension]
     output.push({

@@ -1,19 +1,8 @@
 <template>
-  <div class="header">
-    <img class="logo" alt="ContaAzul" src="~assets/logo-contaazul.svg">
-  </div>
+  <nav class="navbar navbar-light bg-contaazul">
+      <a class="navbar-brand" href="#">
+        <img src="~assets/logo-contaazul.svg" alt="">
+      </a>
+  </nav>
 </template>
 
-<style lang="stylus" scoped>
-  @import './../global'
-
-  .header
-    display flex
-    align-items center
-    background-color $blue
-    position fixed
-    height 50px
-    width 100%
-    .logo 
-      margin 0 30px
-</style>
