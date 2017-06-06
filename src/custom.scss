@@ -11,6 +11,13 @@ $pink:   #ff5b77;
 $purple: #613d7c;
 $gray:   #3f5e7b;
 
+// Create grayscale
+$gray-dark:                 #395A7A;
+$gray:                      #464a4c;
+$gray-light:                #636c72;
+$gray-lighter:              #eceeef;
+$gray-lightest:             #f7f7f9;
+
 // forms
 $input-padding-x:   1rem;
 $input-padding-y:   .7rem;
@@ -22,7 +29,7 @@ $font-size-base: .875rem;
 // button
 $btn-padding-x: 2em;
 
-// backgrounds
+// --
 .bg-contaazul {
     background-color: $blue;
 }
@@ -33,4 +40,15 @@ $btn-padding-x: 2em;
 
 .btn {
     cursor: pointer;
+}
+
+.table-default {
+    border: 1px solid #C9D3DD;
+    background-color: #F8FAFC;
+}
+
+.table-default th {
+    padding: 12px 3px;
+    background-image: none;
+    border-top: 1px solid #C9D3DD;
 }
