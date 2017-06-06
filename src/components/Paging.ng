@@ -57,68 +57,68 @@
 
                 // Hook in our watched items
                 this.$scope.$watchCollection('[$ctrl.page,$ctrl.pageSize,$ctrl.total,$ctrl.disabled]', () => {
-                    this._build(this, $attrs);
+                    this._build($attrs);
                 });
             }
 
-            _build (ctrl, attrs) 
+            _build (attrs) 
             {
                 // Block divide by 0 and empty page size
-                if (!ctrl.pageSize || ctrl.pageSize <= 0) {
-                    ctrl.pageSize = 1;
+                if (!this.pageSize || this.pageSize <= 0) {
+                    this.pageSize = 1;
                 }
 
                 // Determine the last page or total page count
-                var pageCount = Math.ceil(ctrl.total / ctrl.pageSize);
+                var pageCount = Math.ceil(this.total / this.pageSize);
 
-                // Set the default ctrl values where needed
-                this._setScopeValues(ctrl, attrs);
+                // Set the default this values where needed
+                this._setScopeValues(attrs);
 
-                // Validate the ctrl values to protect against strange states
-                this._validateScopeValues(ctrl, pageCount);
+                // Validate the this values to protect against strange states
+                this._validateScopeValues(pageCount);
 
                 // Create the beginning and end page values
                 var start, finish;
 
                 // Calculate the full adjacency value
-                var fullAdjacentSize = (ctrl.adjacent * 2) + 2;
+                var fullAdjacentSize = (this.adjacent * 2) + 2;
 
 
                 // Add the Next and Previous buttons to our list
-                this._addPrevNext(ctrl, pageCount, 'prev');
+                this._addPrevNext(pageCount, 'prev');
 
                 // If the page count is less than the full adjacnet size
                 // Then we simply display all the pages, Otherwise we calculate the proper paging display
                 if (pageCount <= (fullAdjacentSize + 2)) {
 
                     start = 1;
-                    this._addRange(start, pageCount, ctrl);
+                    this._addRange(start, pageCount);
 
                 } else {
 
                     // Determine if we are showing the beginning of the paging list
                     // We know it is the beginning if the page - adjacent is <= 2
-                    if (ctrl.page - ctrl.adjacent <= 2) {
+                    if (this.page - this.adjacent <= 2) {
 
                         start = 1;
                         finish = 1 + fullAdjacentSize;
 
-                        this._addRange(start, finish, ctrl);
-                        this._addLast(pageCount, ctrl, finish);
+                        this._addRange(start, finish);
+                        this._addLast(pageCount, finish);
                     }
 
                     // Determine if we are showing the middle of the paging list
                     // We know we are either in the middle or at the end since the beginning is ruled out above
                     // So we simply check if we are not at the end
                     // Again 2 is hard coded as we always display two pages after the dots
-                    else if (ctrl.page < pageCount - (ctrl.adjacent + 2)) {
+                    else if (this.page < pageCount - (this.adjacent + 2)) {
 
-                        start = ctrl.page - ctrl.adjacent;
-                        finish = ctrl.page + ctrl.adjacent;
+                        start = this.page - this.adjacent;
+                        finish = this.page + this.adjacent;
 
-                        this._addFirst(ctrl, start);
-                        this._addRange(start, finish, ctrl);
-                        this._addLast(pageCount, ctrl, finish);
+                        this._addFirst(start);
+                        this._addRange(start, finish);
+                        this._addLast(pageCount, finish);
                     }
 
                     // If nothing else we conclude we are at the end of the paging list
@@ -128,80 +128,80 @@
                         start = pageCount - fullAdjacentSize;
                         finish = pageCount;
 
-                        this._addFirst(ctrl, start);
-                        this._addRange(start, finish, ctrl);
+                        this._addFirst(start);
+                        this._addRange(start, finish);
                     }
                 }
 
                 // Add the next and last buttons to our paging list
-                this._addPrevNext(ctrl, pageCount, 'next');
+                this._addPrevNext(pageCount, 'next');
             }
 
-            _evalBoolAttribute (ctrl, value) 
+            _evalBoolAttribute (value) 
             {
                 return angular.isDefined(value)
                     ? !!this.$scope.$eval(value)
                     : false;
             }
 
-            _validateScopeValues (ctrl, pageCount) 
+            _validateScopeValues (pageCount) 
             {
                 // Block where the page is larger than the pageCount
-                if (ctrl.page > pageCount) {
-                    ctrl.page = pageCount;
+                if (this.page > pageCount) {
+                    this.page = pageCount;
                 }
 
                 // Block where the page is less than 0
-                if (ctrl.page <= 0) {
-                    ctrl.page = 1;
+                if (this.page <= 0) {
+                    this.page = 1;
                 }
 
                 // Block where adjacent value is 0 or below
-                if (ctrl.adjacent <= 0) {
-                    ctrl.adjacent = 2;
+                if (this.adjacent <= 0) {
+                    this.adjacent = 2;
                 }
 
                 // Hide from page if we have 1 or less pages
                 // if directed to hide empty
                 if (pageCount <= 1) {
-                    ctrl.Hide = ctrl.hideIfEmpty;
+                    this.Hide = this.hideIfEmpty;
                 }
             }
 
-            _internalAction (ctrl, page) 
+            _internalAction (page) 
             {
                 // Block clicks we try to load the active page
-                if (ctrl.page == page) {
+                if (this.page == page) {
                     return;
                 }
 
                 // Block if we are forcing disabled 
-                if(ctrl.isDisabled)
+                if(this.isDisabled)
                 {
                     return;
                 }
 
-                // Update the page in ctrl
-                ctrl.page = page;
+                // Update the page in this
+                this.page = page;
 
                 // Pass our parameters to the paging action
-                ctrl.pagingAction({
-                    page: ctrl.page,
-                    pageSize: ctrl.pageSize,
-                    total: ctrl.total
+                this.pagingAction({
+                    page: this.page,
+                    pageSize: this.pageSize,
+                    total: this.total
                 });
 
                 // If allowed scroll up to the top of the page
-                if (ctrl.scrollTop) {
+                if (this.scrollTop) {
                     scrollTo(0, 0);
                 }
             }
 
-            _addPrevNext (ctrl, pageCount, mode) 
+            _addPrevNext (pageCount, mode) 
             {
                 // Ignore if we are not showing
                 // or there are no pages to display
-                if ((!ctrl.showPrevNext && !ctrl.showFirstLast) || pageCount < 1) {
+                if ((!this.showPrevNext && !this.showFirstLast) || pageCount < 1) {
                     return;
                 }
 
@@ -212,46 +212,46 @@
                 // Calculate the previous / next page and if the click actions are allowed
                 if (mode === 'prev') {
 
-                    disabled = ctrl.page - 1 <= 0;
-                    var prevPage = ctrl.page - 1 <= 0 ? 1 : ctrl.page - 1;
+                    disabled = this.page - 1 <= 0;
+                    var prevPage = this.page - 1 <= 0 ? 1 : this.page - 1;
 
-                    if(ctrl.showFirstLast){
+                    if(this.showFirstLast){
                         alpha = {
-                            value: ctrl.textFirst,
-                            title: ctrl.textTitleFirst, 
-                            aClass: ctrl.textFirstClass,
+                            value: this.textFirst,
+                            title: this.textTitleFirst, 
+                            aClass: this.textFirstClass,
                             page: 1
                         };                
                     }
 
-                    if(ctrl.showPrevNext){
+                    if(this.showPrevNext){
                         beta = {
-                            value: ctrl.textPrev,
-                            title: ctrl.textTitlePrev, 
-                            aClass: ctrl.textPrevClass,
+                            value: this.textPrev,
+                            title: this.textTitlePrev, 
+                            aClass: this.textPrevClass,
                             page: prevPage
                         };    
                     }
 
                 } else {
 
-                    disabled = ctrl.page + 1 > pageCount;
-                    var nextPage = ctrl.page + 1 >= pageCount ? pageCount : ctrl.page + 1;
+                    disabled = this.page + 1 > pageCount;
+                    var nextPage = this.page + 1 >= pageCount ? pageCount : this.page + 1;
 
-                    if(ctrl.showPrevNext){
+                    if(this.showPrevNext){
                         alpha = {
-                            value: ctrl.textNext,
-                            title: ctrl.textTitleNext, 
-                            aClass: ctrl.textNextClass,
+                            value: this.textNext,
+                            title: this.textTitleNext, 
+                            aClass: this.textNextClass,
                             page: nextPage
                         };    
                     }
                     
-                    if(ctrl.showFirstLast){
+                    if(this.showFirstLast){
                         beta = {
-                            value: ctrl.textLast,
-                            title: ctrl.textTitleLast, 
-                            aClass: ctrl.textLastClass,
+                            value: this.textLast,
+                            title: this.textTitleLast, 
+                            aClass: this.textLastClass,
                             page: pageCount
                         };    
                     }
@@ -264,128 +264,129 @@
                         title: item.title,
                         aClass: item.aClass,
                         value: item.aClass ? '' : item.value,
-                        liClass: disabled ? ctrl.disabledClass : '',
-                        pgHref: disabled ? '' : ctrl.pgHref.replace(regex, item.page),
+                        liClass: disabled ? this.disabledClass : '',
+                        pgHref: disabled ? '' : this.pgHref.replace(regex, item.page),
                         action: () => {
                             if (!disabled) {
-                                this._internalAction(ctrl, item.page);
+                                this._internalAction(item.page);
                             }
                         }
                     };    
                 };
 
                 // Force disabled if specified
-                if(ctrl.isDisabled){
+                if(this.isDisabled){
                     disabled = true;
                 }
 
                 // Add alpha items
                 if(alpha){
                     var alphaItem = buildItem(alpha, disabled);
-                    ctrl.List.push(alphaItem);    
+                    this.List.push(alphaItem);    
                 }
                 
                 // Add beta items
                 if(beta){
                     var betaItem = buildItem(beta, disabled);
-                    ctrl.List.push(betaItem);    
+                    this.List.push(betaItem);    
                 }
             }
 
-            _addRange(start, finish, ctrl) 
+            _addRange(start, finish) 
             {
+                let self = this
                 // Add our items where i is the page number
                 var i = 0;
                 for (i = start; i <= finish; i++) {
 
-                    var pgHref = ctrl.pgHref.replace(regex, i);
-                    var liClass = ctrl.page == i ? ctrl.activeClass : ''; 
+                    var pgHref = this.pgHref.replace(regex, i);
+                    var liClass = this.page == i ? this.activeClass : ''; 
 
                     // Handle items that are affected by disabled
-                    if(ctrl.isDisabled){
+                    if(this.isDisabled){
                         pgHref = '';
-                        liClass = ctrl.disabledClass;
+                        liClass = this.disabledClass;
                     }
 
-                    ctrl.List.push({
+                    this.List.push({
                         value: i,
-                        title: ctrl.textTitlePage.replace(regex, i),
+                        title: this.textTitlePage.replace(regex, i),
                         liClass: liClass,
                         pgHref: pgHref,
                         action () {
-                            ctrl._internalAction(ctrl, this.value);
+                            self._internalAction(this.value);
                         }
                     });
                 }
             }
 
-            _addDots (ctrl) 
+            _addDots () 
             {
-                ctrl.List.push({
-                    value: ctrl.dots,
-                    liClass: ctrl.disabledClass
+                this.List.push({
+                    value: this.dots,
+                    liClass: this.disabledClass
                 });
             }
 
-            _addFirst(ctrl, next) 
+            _addFirst(next) 
             {
-                this._addRange(1, 2, ctrl);
+                this._addRange(1, 2);
 
                 // We ignore dots if the next value is 3
                 // ie: 1 2 [...] 3 4 5 becomes just 1 2 3 4 5
                 if (next != 3) {
-                    this._addDots(ctrl);
+                    this._addDots();
                 }
             }
 
-            _addLast(pageCount, ctrl, prev) 
+            _addLast(pageCount, prev) 
             {
                 // We ignore dots if the previous value is one less that our start range
                 // ie: 1 2 3 4 [...] 5 6  becomes just 1 2 3 4 5 6
                 if (prev != pageCount - 2) {
-                    this._addDots(ctrl);
+                    this._addDots();
                 }
 
-                this._addRange(pageCount - 1, pageCount, ctrl);
+                this._addRange(pageCount - 1, pageCount);
             }
 
-            _setScopeValues (ctrl, attrs)
+            _setScopeValues (attrs)
             {
-                ctrl.List = [];
-                ctrl.Hide = false;
+                this.List = [];
+                this.Hide = false;
                 
-                ctrl.page = parseInt(ctrl.page) || 1;
-                ctrl.total = parseInt(ctrl.total) || 0;
-                ctrl.adjacent = parseInt(ctrl.adjacent) || 2;
+                this.page = parseInt(this.page) || 1;
+                this.total = parseInt(this.total) || 0;
+                this.adjacent = parseInt(this.adjacent) || 2;
 
-                ctrl.pgHref = ctrl.pgHref || '';
-                ctrl.dots = ctrl.dots || '...';
+                this.pgHref = this.pgHref || '';
+                this.dots = this.dots || '...';
                 
-                ctrl.ulClass = ctrl.ulClass || 'pagination';
-                ctrl.activeClass = ctrl.activeClass || 'active';
-                ctrl.disabledClass = ctrl.disabledClass || 'disabled';
+                this.ulClass = this.ulClass || 'pagination';
+                this.activeClass = this.activeClass || 'active';
+                this.disabledClass = this.disabledClass || 'disabled';
 
-                ctrl.textFirst = ctrl.textFirst || '<<';
-                ctrl.textLast = ctrl.textLast || '>>';
-                ctrl.textNext = ctrl.textNext || '>';
-                ctrl.textPrev = ctrl.textPrev || '<';
+                this.textFirst = this.textFirst || '<<';
+                this.textLast = this.textLast || '>>';
+                this.textNext = this.textNext || '>';
+                this.textPrev = this.textPrev || '<';
                 
-                ctrl.textFirstClass = ctrl.textFirstClass || '';
-                ctrl.textLastClass= ctrl.textLastClass || '';
-                ctrl.textNextClass = ctrl.textNextClass || 'fa fa-angle-double-right next';
-                ctrl.textPrevClass = ctrl.textPrevClass || 'fa fa-angle-double-left prev';
+                this.textFirstClass = this.textFirstClass || '';
+                this.textLastClass= this.textLastClass || '';
+                this.textNextClass = this.textNextClass || 'fa fa-angle-double-right next';
+                this.textPrevClass = this.textPrevClass || 'fa fa-angle-double-left prev';
 
-                ctrl.textTitlePage = ctrl.textTitlePage || 'Page {page}';
-                ctrl.textTitleFirst = ctrl.textTitleFirst || 'First Page'; 
-                ctrl.textTitleLast = ctrl.textTitleLast || 'Last Page'; 
-                ctrl.textTitleNext = ctrl.textTitleNext || 'Next Page'; 
-                ctrl.textTitlePrev = ctrl.textTitlePrev || 'Previous Page'; 
+                this.textTitlePage = this.textTitlePage || 'Page {page}';
+                this.textTitleFirst = this.textTitleFirst || 'First Page'; 
+                this.textTitleLast = this.textTitleLast || 'Last Page'; 
+                this.textTitleNext = this.textTitleNext || 'Next Page'; 
+                this.textTitlePrev = this.textTitlePrev || 'Previous Page'; 
 
-                ctrl.hideIfEmpty = this._evalBoolAttribute(ctrl, attrs.hideIfEmpty);
-                ctrl.showPrevNext = this._evalBoolAttribute(ctrl, attrs.showPrevNext);
-                ctrl.showFirstLast = this._evalBoolAttribute(ctrl, attrs.showFirstLast);
-                ctrl.scrollTop = this._evalBoolAttribute(ctrl, attrs.scrollTop);
-                ctrl.isDisabled = this._evalBoolAttribute(ctrl, attrs.disabled);
+                this.hideIfEmpty = this._evalBoolAttribute(attrs.hideIfEmpty);
+                this.showPrevNext = this._evalBoolAttribute(attrs.showPrevNext);
+                this.showFirstLast = this._evalBoolAttribute(attrs.showFirstLast);
+                this.scrollTop = this._evalBoolAttribute(attrs.scrollTop);
+                this.isDisabled = this._evalBoolAttribute(attrs.disabled);
             }
         }
     }
