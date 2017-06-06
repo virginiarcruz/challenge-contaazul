@@ -9,7 +9,7 @@
                     </button>
                 </div>
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Pesquisar" aria-describedby="btnGroupAddon2">
+                    <input type="text" ng-model="$ctrl.search" class="form-control" placeholder="Pesquisar" aria-describedby="btnGroupAddon2">
                     <span class="input-group-addon" id="btnGroupAddon2">
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </span>
@@ -32,7 +32,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="veiculo in $ctrl.veiculos">
+                    <tr ng-repeat="veiculo in $ctrl.veiculos | filter : $ctrl.search ">
                         <td class="">
                             <toggle target="veiculo.selecionado" ng-click="$ctrl.select(veiculo)"></toggle>
                         </td>
