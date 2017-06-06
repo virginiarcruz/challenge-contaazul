@@ -1,10 +1,11 @@
 import * as angular from 'angular'
-import 'angular-ui-router'
+import uiRouter from 'angular-ui-router'
+import ngLocale from 'angular-i18n/pt-br'
 
 import app from './App'
 import fleetPage from './modules/fleet/FleetPage'
 
-angular.module('app', ['ui.router'])
+angular.module('app', [uiRouter, ngLocale])
 .components( { app, fleetPage })
 .config(['$stateProvider', ({ state }) => {
 
