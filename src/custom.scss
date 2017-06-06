@@ -45,7 +45,7 @@ $btn-padding-x: 2em;
 $table-border-color:        #c9d3dd;
 $table-cell-padding:          .75rem;
 
-$custom-control-indicator-size:       1.5rem;
+$custom-control-indicator-size:       1.3rem;
 $custom-control-indicator-bg:         #fff;
 
 // pagination
@@ -67,9 +67,15 @@ $pagination-hover-bg:                  $yellow-lighter;
     cursor: pointer;
 }
 
-.table-default {
+.table.table-default {
     border: 1px solid #C9D3DD;
-    background-color: #F8FAFC;
+    thead th {
+        vertical-align: bottom;
+        border-bottom: $table-border-width solid $table-border-color;
+    }
+    td {
+        background-color: #FFFFFF;
+    }
     border-collapse: collapse;
 }
 
