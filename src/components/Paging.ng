@@ -53,9 +53,10 @@
             constructor ($scope, $attrs) 
             {
                 this.$inject = ['$scope', '$attrs']
+                this.$scope = $scope
 
                 // Hook in our watched items
-                $scope.$watchCollection('[$ctrl.page,$ctrl.pageSize,$ctrl.total,$ctrl.disabled]', () => {
+                this.$scope.$watchCollection('[$ctrl.page,$ctrl.pageSize,$ctrl.total,$ctrl.disabled]', () => {
                     this._build(this, $attrs);
                 });
             }
@@ -139,7 +140,7 @@
             _evalBoolAttribute (scope, value) 
             {
                 return angular.isDefined(value)
-                    ? !!scope.$parent.$eval(value)
+                    ? !!this.$scope.$eval(value)
                     : false;
             }
 
@@ -371,8 +372,8 @@
                 
                 scope.textFirstClass = scope.textFirstClass || '';
                 scope.textLastClass= scope.textLastClass || '';
-                scope.textNextClass = scope.textNextClass || '';
-                scope.textPrevClass = scope.textPrevClass || '';
+                scope.textNextClass = scope.textNextClass || 'fa fa-angle-double-right next';
+                scope.textPrevClass = scope.textPrevClass || 'fa fa-angle-double-left prev';
 
                 scope.textTitlePage = scope.textTitlePage || 'Page {page}';
                 scope.textTitleFirst = scope.textTitleFirst || 'First Page'; 
@@ -393,5 +394,9 @@
 <style scoped>
     .page-link {
         cursor: default;
+    }
+
+    .next, .prev {
+        font-weight: bold;
     }
 </style>

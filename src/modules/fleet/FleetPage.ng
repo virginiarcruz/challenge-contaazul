@@ -75,7 +75,8 @@
             <nav>
                 <paging
                     page="$ctrl.currentPage" 
-                    page-size="$ctrl.pageSize" 
+                    page-size="$ctrl.pageSize"
+                    show-prev-next="true"
                     total="$ctrl.total"
                     class="justify-content-center">
                 </paging>
