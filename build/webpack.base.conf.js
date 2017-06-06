@@ -23,7 +23,8 @@ module.exports = {
     alias: {
       '@': resolve('src'),
       'assets': resolve('src/assets'),
-      'components': resolve('src/components')
+      'components': resolve('src/components'),
+      'flux': 'flux-angular/release/flux-angular.js'
     }
   },
   module: {

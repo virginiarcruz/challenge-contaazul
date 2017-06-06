@@ -8,9 +8,10 @@ import uiRouter from 'angular-ui-router'
 import ngLocale from 'angular-i18n/pt-br'
 
 import app from './App'
+import store from './store'
 import fleetPage from './modules/fleet/FleetPage'
 
-angular.module('app', [uiRouter, ngLocale])
+angular.module('app', [uiRouter, ngLocale, store])
 .components( { app, fleetPage })
 .directive('caPopover', function () {
     return {
