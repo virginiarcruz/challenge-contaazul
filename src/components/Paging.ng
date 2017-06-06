@@ -55,14 +55,13 @@
                 this.$inject = ['$scope', '$attrs']
 
                 // Hook in our watched items
-                $scope.$watchCollection('[page,pageSize,total,disabled]', () => {
+                $scope.$watchCollection('[$ctrl.page,$ctrl.pageSize,$ctrl.total,$ctrl.disabled]', () => {
                     this._build(this, $attrs);
                 });
             }
 
             _build (scope, attrs) 
             {
-                console.log(scope)
                 // Block divide by 0 and empty page size
                 if (!scope.pageSize || scope.pageSize <= 0) {
                     scope.pageSize = 1;
@@ -312,8 +311,8 @@
                         title: scope.textTitlePage.replace(regex, i),
                         liClass: liClass,
                         pgHref: pgHref,
-                        action: () => {
-                            this._internalAction(scope, i);
+                        action () {
+                            scope._internalAction(scope, this.value);
                         }
                     });
                 }
@@ -390,3 +389,9 @@
         }
     }
 </script>
+
+<style scoped>
+    .page-link {
+        cursor: default;
+    }
+</style>
