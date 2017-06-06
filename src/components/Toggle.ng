@@ -1,0 +1,23 @@
+<template>
+    <label class="custom-control custom-checkbox checkbox">
+        <input type="checkbox" ng-model="$ctrl.target" class="custom-control-input">
+        <span class="custom-control-indicator"></span>
+    </label>
+</template>
+
+<script>
+    export default {
+        bindings: { target: '=?'}
+    }
+</script>
+
+<style lang="scss" scoped>
+    .checkbox {
+        margin: 0;
+        min-height: 1rem
+    }
+
+    .custom-control-indicator {
+        border: 1px solid #ddd
+    }
+</style>

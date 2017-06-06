@@ -1,3 +1,5 @@
+@import '~bootstrap/scss/variables';
+
 // colors
 $white:  #fff;
 $black:  #000;
@@ -23,11 +25,18 @@ $input-padding-x:   1rem;
 $input-padding-y:   .7rem;
 $input-line-height: 1.25;
 
-$input-color-placeholder: #9CA5AC;
+$input-color-placeholder:   #9CA5AC;
 $font-size-base: .875rem;
 
 // button
 $btn-padding-x: 2em;
+
+// table
+$table-border-color:        #c9d3dd;
+$table-cell-padding:          .75rem;
+
+$custom-control-indicator-size:       1.5rem;
+$custom-control-indicator-bg:         #fff;
 
 // --
 .bg-contaazul {
@@ -45,10 +54,11 @@ $btn-padding-x: 2em;
 .table-default {
     border: 1px solid #C9D3DD;
     background-color: #F8FAFC;
+    border-collapse: collapse;
 }
 
-.table-default th {
-    padding: 12px 3px;
-    background-image: none;
-    border-top: 1px solid #C9D3DD;
+.table.table-default {
+    td {
+        padding: ($table-cell-padding + .2rem) $table-cell-padding
+    }
 }
