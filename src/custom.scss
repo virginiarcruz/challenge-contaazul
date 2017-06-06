@@ -14,11 +14,14 @@ $purple: #613d7c;
 $gray:   #3f5e7b;
 
 // Create grayscale
-$gray-dark:                 #395A7A;
+$gray-dark:                 #385A7B;
 $gray:                      #464a4c;
 $gray-light:                #636c72;
 $gray-lighter:              #eceeef;
 $gray-lightest:             #f7f7f9;
+
+$body-color:    $gray-dark;
+$input-color:   $gray-dark;
 
 // forms
 $input-padding-x:   1rem;
