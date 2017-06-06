@@ -61,64 +61,64 @@
                 });
             }
 
-            _build (scope, attrs) 
+            _build (ctrl, attrs) 
             {
                 // Block divide by 0 and empty page size
-                if (!scope.pageSize || scope.pageSize <= 0) {
-                    scope.pageSize = 1;
+                if (!ctrl.pageSize || ctrl.pageSize <= 0) {
+                    ctrl.pageSize = 1;
                 }
 
                 // Determine the last page or total page count
-                var pageCount = Math.ceil(scope.total / scope.pageSize);
+                var pageCount = Math.ceil(ctrl.total / ctrl.pageSize);
 
-                // Set the default scope values where needed
-                this._setScopeValues(scope, attrs);
+                // Set the default ctrl values where needed
+                this._setScopeValues(ctrl, attrs);
 
-                // Validate the scope values to protect against strange states
-                this._validateScopeValues(scope, pageCount);
+                // Validate the ctrl values to protect against strange states
+                this._validateScopeValues(ctrl, pageCount);
 
                 // Create the beginning and end page values
                 var start, finish;
 
                 // Calculate the full adjacency value
-                var fullAdjacentSize = (scope.adjacent * 2) + 2;
+                var fullAdjacentSize = (ctrl.adjacent * 2) + 2;
 
 
                 // Add the Next and Previous buttons to our list
-                this._addPrevNext(scope, pageCount, 'prev');
+                this._addPrevNext(ctrl, pageCount, 'prev');
 
                 // If the page count is less than the full adjacnet size
                 // Then we simply display all the pages, Otherwise we calculate the proper paging display
                 if (pageCount <= (fullAdjacentSize + 2)) {
 
                     start = 1;
-                    this._addRange(start, pageCount, scope);
+                    this._addRange(start, pageCount, ctrl);
 
                 } else {
 
                     // Determine if we are showing the beginning of the paging list
                     // We know it is the beginning if the page - adjacent is <= 2
-                    if (scope.page - scope.adjacent <= 2) {
+                    if (ctrl.page - ctrl.adjacent <= 2) {
 
                         start = 1;
                         finish = 1 + fullAdjacentSize;
 
-                        this._addRange(start, finish, scope);
-                        this._addLast(pageCount, scope, finish);
+                        this._addRange(start, finish, ctrl);
+                        this._addLast(pageCount, ctrl, finish);
                     }
 
                     // Determine if we are showing the middle of the paging list
                     // We know we are either in the middle or at the end since the beginning is ruled out above
                     // So we simply check if we are not at the end
                     // Again 2 is hard coded as we always display two pages after the dots
-                    else if (scope.page < pageCount - (scope.adjacent + 2)) {
+                    else if (ctrl.page < pageCount - (ctrl.adjacent + 2)) {
 
-                        start = scope.page - scope.adjacent;
-                        finish = scope.page + scope.adjacent;
+                        start = ctrl.page - ctrl.adjacent;
+                        finish = ctrl.page + ctrl.adjacent;
 
-                        this._addFirst(scope, start);
-                        this._addRange(start, finish, scope);
-                        this._addLast(pageCount, scope, finish);
+                        this._addFirst(ctrl, start);
+                        this._addRange(start, finish, ctrl);
+                        this._addLast(pageCount, ctrl, finish);
                     }
 
                     // If nothing else we conclude we are at the end of the paging list
@@ -128,80 +128,80 @@
                         start = pageCount - fullAdjacentSize;
                         finish = pageCount;
 
-                        this._addFirst(scope, start);
-                        this._addRange(start, finish, scope);
+                        this._addFirst(ctrl, start);
+                        this._addRange(start, finish, ctrl);
                     }
                 }
 
                 // Add the next and last buttons to our paging list
-                this._addPrevNext(scope, pageCount, 'next');
+                this._addPrevNext(ctrl, pageCount, 'next');
             }
 
-            _evalBoolAttribute (scope, value) 
+            _evalBoolAttribute (ctrl, value) 
             {
                 return angular.isDefined(value)
                     ? !!this.$scope.$eval(value)
                     : false;
             }
 
-            _validateScopeValues (scope, pageCount) 
+            _validateScopeValues (ctrl, pageCount) 
             {
                 // Block where the page is larger than the pageCount
-                if (scope.page > pageCount) {
-                    scope.page = pageCount;
+                if (ctrl.page > pageCount) {
+                    ctrl.page = pageCount;
                 }
 
                 // Block where the page is less than 0
-                if (scope.page <= 0) {
-                    scope.page = 1;
+                if (ctrl.page <= 0) {
+                    ctrl.page = 1;
                 }
 
                 // Block where adjacent value is 0 or below
-                if (scope.adjacent <= 0) {
-                    scope.adjacent = 2;
+                if (ctrl.adjacent <= 0) {
+                    ctrl.adjacent = 2;
                 }
 
                 // Hide from page if we have 1 or less pages
                 // if directed to hide empty
                 if (pageCount <= 1) {
-                    scope.Hide = scope.hideIfEmpty;
+                    ctrl.Hide = ctrl.hideIfEmpty;
                 }
             }
 
-            _internalAction (scope, page) 
+            _internalAction (ctrl, page) 
             {
                 // Block clicks we try to load the active page
-                if (scope.page == page) {
+                if (ctrl.page == page) {
                     return;
                 }
 
                 // Block if we are forcing disabled 
-                if(scope.isDisabled)
+                if(ctrl.isDisabled)
                 {
                     return;
                 }
 
-                // Update the page in scope
-                scope.page = page;
+                // Update the page in ctrl
+                ctrl.page = page;
 
                 // Pass our parameters to the paging action
-                scope.pagingAction({
-                    page: scope.page,
-                    pageSize: scope.pageSize,
-                    total: scope.total
+                ctrl.pagingAction({
+                    page: ctrl.page,
+                    pageSize: ctrl.pageSize,
+                    total: ctrl.total
                 });
 
                 // If allowed scroll up to the top of the page
-                if (scope.scrollTop) {
+                if (ctrl.scrollTop) {
                     scrollTo(0, 0);
                 }
             }
 
-            _addPrevNext (scope, pageCount, mode) 
+            _addPrevNext (ctrl, pageCount, mode) 
             {
                 // Ignore if we are not showing
                 // or there are no pages to display
-                if ((!scope.showPrevNext && !scope.showFirstLast) || pageCount < 1) {
+                if ((!ctrl.showPrevNext && !ctrl.showFirstLast) || pageCount < 1) {
                     return;
                 }
 
@@ -212,46 +212,46 @@
                 // Calculate the previous / next page and if the click actions are allowed
                 if (mode === 'prev') {
 
-                    disabled = scope.page - 1 <= 0;
-                    var prevPage = scope.page - 1 <= 0 ? 1 : scope.page - 1;
+                    disabled = ctrl.page - 1 <= 0;
+                    var prevPage = ctrl.page - 1 <= 0 ? 1 : ctrl.page - 1;
 
-                    if(scope.showFirstLast){
+                    if(ctrl.showFirstLast){
                         alpha = {
-                            value: scope.textFirst,
-                            title: scope.textTitleFirst, 
-                            aClass: scope.textFirstClass,
+                            value: ctrl.textFirst,
+                            title: ctrl.textTitleFirst, 
+                            aClass: ctrl.textFirstClass,
                             page: 1
                         };                
                     }
 
-                    if(scope.showPrevNext){
+                    if(ctrl.showPrevNext){
                         beta = {
-                            value: scope.textPrev,
-                            title: scope.textTitlePrev, 
-                            aClass: scope.textPrevClass,
+                            value: ctrl.textPrev,
+                            title: ctrl.textTitlePrev, 
+                            aClass: ctrl.textPrevClass,
                             page: prevPage
                         };    
                     }
 
                 } else {
 
-                    disabled = scope.page + 1 > pageCount;
-                    var nextPage = scope.page + 1 >= pageCount ? pageCount : scope.page + 1;
+                    disabled = ctrl.page + 1 > pageCount;
+                    var nextPage = ctrl.page + 1 >= pageCount ? pageCount : ctrl.page + 1;
 
-                    if(scope.showPrevNext){
+                    if(ctrl.showPrevNext){
                         alpha = {
-                            value: scope.textNext,
-                            title: scope.textTitleNext, 
-                            aClass: scope.textNextClass,
+                            value: ctrl.textNext,
+                            title: ctrl.textTitleNext, 
+                            aClass: ctrl.textNextClass,
                             page: nextPage
                         };    
                     }
                     
-                    if(scope.showFirstLast){
+                    if(ctrl.showFirstLast){
                         beta = {
-                            value: scope.textLast,
-                            title: scope.textTitleLast, 
-                            aClass: scope.textLastClass,
+                            value: ctrl.textLast,
+                            title: ctrl.textTitleLast, 
+                            aClass: ctrl.textLastClass,
                             page: pageCount
                         };    
                     }
@@ -264,134 +264,138 @@
                         title: item.title,
                         aClass: item.aClass,
                         value: item.aClass ? '' : item.value,
-                        liClass: disabled ? scope.disabledClass : '',
-                        pgHref: disabled ? '' : scope.pgHref.replace(regex, item.page),
+                        liClass: disabled ? ctrl.disabledClass : '',
+                        pgHref: disabled ? '' : ctrl.pgHref.replace(regex, item.page),
                         action: () => {
                             if (!disabled) {
-                                this._internalAction(scope, item.page);
+                                this._internalAction(ctrl, item.page);
                             }
                         }
                     };    
                 };
 
                 // Force disabled if specified
-                if(scope.isDisabled){
+                if(ctrl.isDisabled){
                     disabled = true;
                 }
 
                 // Add alpha items
                 if(alpha){
                     var alphaItem = buildItem(alpha, disabled);
-                    scope.List.push(alphaItem);    
+                    ctrl.List.push(alphaItem);    
                 }
                 
                 // Add beta items
                 if(beta){
                     var betaItem = buildItem(beta, disabled);
-                    scope.List.push(betaItem);    
+                    ctrl.List.push(betaItem);    
                 }
             }
 
-            _addRange(start, finish, scope) 
+            _addRange(start, finish, ctrl) 
             {
                 // Add our items where i is the page number
                 var i = 0;
                 for (i = start; i <= finish; i++) {
 
-                    var pgHref = scope.pgHref.replace(regex, i);
-                    var liClass = scope.page == i ? scope.activeClass : ''; 
+                    var pgHref = ctrl.pgHref.replace(regex, i);
+                    var liClass = ctrl.page == i ? ctrl.activeClass : ''; 
 
                     // Handle items that are affected by disabled
-                    if(scope.isDisabled){
+                    if(ctrl.isDisabled){
                         pgHref = '';
-                        liClass = scope.disabledClass;
+                        liClass = ctrl.disabledClass;
                     }
 
-                    scope.List.push({
+                    ctrl.List.push({
                         value: i,
-                        title: scope.textTitlePage.replace(regex, i),
+                        title: ctrl.textTitlePage.replace(regex, i),
                         liClass: liClass,
                         pgHref: pgHref,
                         action () {
-                            scope._internalAction(scope, this.value);
+                            ctrl._internalAction(ctrl, this.value);
                         }
                     });
                 }
             }
 
-            _addDots (scope) 
+            _addDots (ctrl) 
             {
-                scope.List.push({
-                    value: scope.dots,
-                    liClass: scope.disabledClass
+                ctrl.List.push({
+                    value: ctrl.dots,
+                    liClass: ctrl.disabledClass
                 });
             }
 
-            _addFirst(scope, next) 
+            _addFirst(ctrl, next) 
             {
-                this._addRange(1, 2, scope);
+                this._addRange(1, 2, ctrl);
 
                 // We ignore dots if the next value is 3
                 // ie: 1 2 [...] 3 4 5 becomes just 1 2 3 4 5
                 if (next != 3) {
-                    this._addDots(scope);
+                    this._addDots(ctrl);
                 }
             }
 
-            _addLast(pageCount, scope, prev) 
+            _addLast(pageCount, ctrl, prev) 
             {
                 // We ignore dots if the previous value is one less that our start range
                 // ie: 1 2 3 4 [...] 5 6  becomes just 1 2 3 4 5 6
                 if (prev != pageCount - 2) {
-                    this._addDots(scope);
+                    this._addDots(ctrl);
                 }
 
-                this._addRange(pageCount - 1, pageCount, scope);
+                this._addRange(pageCount - 1, pageCount, ctrl);
             }
 
-            _setScopeValues (scope, attrs)
+            _setScopeValues (ctrl, attrs)
             {
-                scope.List = [];
-                scope.Hide = false;
+                ctrl.List = [];
+                ctrl.Hide = false;
                 
-                scope.page = parseInt(scope.page) || 1;
-                scope.total = parseInt(scope.total) || 0;
-                scope.adjacent = parseInt(scope.adjacent) || 2;
+                ctrl.page = parseInt(ctrl.page) || 1;
+                ctrl.total = parseInt(ctrl.total) || 0;
+                ctrl.adjacent = parseInt(ctrl.adjacent) || 2;
 
-                scope.pgHref = scope.pgHref || '';
-                scope.dots = scope.dots || '...';
+                ctrl.pgHref = ctrl.pgHref || '';
+                ctrl.dots = ctrl.dots || '...';
                 
-                scope.ulClass = scope.ulClass || 'pagination';
-                scope.activeClass = scope.activeClass || 'active';
-                scope.disabledClass = scope.disabledClass || 'disabled';
+                ctrl.ulClass = ctrl.ulClass || 'pagination';
+                ctrl.activeClass = ctrl.activeClass || 'active';
+                ctrl.disabledClass = ctrl.disabledClass || 'disabled';
 
-                scope.textFirst = scope.textFirst || '<<';
-                scope.textLast = scope.textLast || '>>';
-                scope.textNext = scope.textNext || '>';
-                scope.textPrev = scope.textPrev || '<';
+                ctrl.textFirst = ctrl.textFirst || '<<';
+                ctrl.textLast = ctrl.textLast || '>>';
+                ctrl.textNext = ctrl.textNext || '>';
+                ctrl.textPrev = ctrl.textPrev || '<';
                 
-                scope.textFirstClass = scope.textFirstClass || '';
-                scope.textLastClass= scope.textLastClass || '';
-                scope.textNextClass = scope.textNextClass || 'fa fa-angle-double-right next';
-                scope.textPrevClass = scope.textPrevClass || 'fa fa-angle-double-left prev';
+                ctrl.textFirstClass = ctrl.textFirstClass || '';
+                ctrl.textLastClass= ctrl.textLastClass || '';
+                ctrl.textNextClass = ctrl.textNextClass || 'fa fa-angle-double-right next';
+                ctrl.textPrevClass = ctrl.textPrevClass || 'fa fa-angle-double-left prev';
 
-                scope.textTitlePage = scope.textTitlePage || 'Page {page}';
-                scope.textTitleFirst = scope.textTitleFirst || 'First Page'; 
-                scope.textTitleLast = scope.textTitleLast || 'Last Page'; 
-                scope.textTitleNext = scope.textTitleNext || 'Next Page'; 
-                scope.textTitlePrev = scope.textTitlePrev || 'Previous Page'; 
+                ctrl.textTitlePage = ctrl.textTitlePage || 'Page {page}';
+                ctrl.textTitleFirst = ctrl.textTitleFirst || 'First Page'; 
+                ctrl.textTitleLast = ctrl.textTitleLast || 'Last Page'; 
+                ctrl.textTitleNext = ctrl.textTitleNext || 'Next Page'; 
+                ctrl.textTitlePrev = ctrl.textTitlePrev || 'Previous Page'; 
 
-                scope.hideIfEmpty = this._evalBoolAttribute(scope, attrs.hideIfEmpty);
-                scope.showPrevNext = this._evalBoolAttribute(scope, attrs.showPrevNext);
-                scope.showFirstLast = this._evalBoolAttribute(scope, attrs.showFirstLast);
-                scope.scrollTop = this._evalBoolAttribute(scope, attrs.scrollTop);
-                scope.isDisabled = this._evalBoolAttribute(scope, attrs.disabled);
+                ctrl.hideIfEmpty = this._evalBoolAttribute(ctrl, attrs.hideIfEmpty);
+                ctrl.showPrevNext = this._evalBoolAttribute(ctrl, attrs.showPrevNext);
+                ctrl.showFirstLast = this._evalBoolAttribute(ctrl, attrs.showFirstLast);
+                ctrl.scrollTop = this._evalBoolAttribute(ctrl, attrs.scrollTop);
+                ctrl.isDisabled = this._evalBoolAttribute(ctrl, attrs.disabled);
             }
         }
     }
 </script>
 
 <style scoped>
+    .page-item {
+        user-select: none;
+    }
+
     .page-link {
         cursor: default;
     }
