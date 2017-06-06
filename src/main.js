@@ -1,4 +1,5 @@
 window.jQuery = require('jquery')
+window.$ = window.jQuery
 window.Tether = require('tether')
 require('bootstrap')
 
@@ -11,6 +12,14 @@ import fleetPage from './modules/fleet/FleetPage'
 
 angular.module('app', [uiRouter, ngLocale])
 .components( { app, fleetPage })
+.directive('caPopover', function () {
+    return {
+        restrict: 'A',
+        link: function ($scope, $el) {
+            $($el).popover()
+        }
+    }
+})
 .config(['$stateProvider', ({ state }) => {
 
     state('fleet', {

@@ -40,15 +40,7 @@
                         <td>{{ ::veiculo.modelo }}</td>
                         <td>{{ ::veiculo.marca }}</td>
                         <td>
-                            <a tabindex="0"  
-                                role="button" 
-                                data-toggle="popover" 
-                                data-trigger="hover"
-                                data-html="true"
-                                title="Dismissible popover" 
-                                data-content="And here's some amazing content. It's very engaging. Right?">
-                                Imagem
-                            </a>
+                            <show-image src="veiculo.imagem"></show-image>
                         </td>
                         <td>{{ ::veiculo.combustivel }}</td>
                         <td>{{ ::veiculo.valor | currency }}</td>
@@ -61,10 +53,11 @@
 
 <script>
     import actionHeader from 'components/ActionHeader'
+    import showImage from 'components/ShowImage'
     import toggle from 'components/Toggle'
 
     export default {
-        components: { actionHeader, toggle },
+        components: { actionHeader, showImage, toggle },
         controller: class FleetPageCtrl {
             constructor ($scope) 
             {

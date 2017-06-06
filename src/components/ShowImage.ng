@@ -1,0 +1,18 @@
+<template>
+    <a tabindex="0"  
+        ca-popover
+        role="button" 
+        data-toggle="popover" 
+        data-trigger="hover"
+        data-html="true"
+        title="Imagem"
+        data-content="<img width='200px' src='{{ $ctrl.src }}'>">
+        Imagem
+    </a>
+</template>
+
+<script>
+    export default {
+        bindings: { src: '=', title: '@?' }
+    }
+</script>
