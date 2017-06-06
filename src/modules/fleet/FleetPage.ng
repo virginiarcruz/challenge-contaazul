@@ -39,9 +39,19 @@
                         <td>{{ ::veiculo.placa }}</td>
                         <td>{{ ::veiculo.modelo }}</td>
                         <td>{{ ::veiculo.marca }}</td>
-                        <td>{{ ::veiculo.foto }}</td>
+                        <td>
+                            <a tabindex="0"  
+                                role="button" 
+                                data-toggle="popover" 
+                                data-trigger="hover"
+                                data-html="true"
+                                title="Dismissible popover" 
+                                data-content="And here's some amazing content. It's very engaging. Right?">
+                                Imagem
+                            </a>
+                        </td>
                         <td>{{ ::veiculo.combustivel }}</td>
-                        <td>{{ ::veiculo.valor }}</td>
+                        <td>{{ ::veiculo.valor | currency }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -118,3 +128,4 @@
         }
     }
 </script>
+

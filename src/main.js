@@ -1,4 +1,8 @@
-import * as angular from 'angular'
+window.jQuery = require('jquery')
+window.Tether = require('tether')
+require('bootstrap')
+
+import angular  from 'angular'
 import uiRouter from 'angular-ui-router'
 import ngLocale from 'angular-i18n/pt-br'
 
