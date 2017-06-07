@@ -1,14 +1,20 @@
 <template>
-    <a tabindex="0"  
-        ca-popover
-        role="button" 
-        data-toggle="popover" 
-        data-trigger="hover"
-        data-html="true"
-        title="Imagem"
-        data-content="<img width='200px' src='{{ $ctrl.src }}'>">
-        Imagem
-    </a>
+    <div>
+        <a tabindex="0"  
+            ca-popover
+            role="button" 
+            data-toggle="popover" 
+            data-trigger="hover"
+            data-html="true"
+            title="Imagem"
+            data-content="<img width='200px' src='{{ $ctrl.src }}'>"
+            ng-if="$ctrl.src">
+            Imagem
+        </a>
+        <span ng-if="!$ctrl.src">
+            Sem foto
+        </span>
+    </div>
 </template>
 
 <script>

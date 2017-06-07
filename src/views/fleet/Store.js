@@ -5,7 +5,8 @@ export default {
     state: {
         search: '',
         currentPage: 1,
-        pageSize: 2,
+        pageSize: 5,
+        selectedIndex: 0,
         total: 0,
         veiculos: [{
             "combustivel" : "Flex",
@@ -34,7 +35,7 @@ export default {
     },
     handlers: {
         'UPDATE': 'update',
-        'ADD': 'add',
+        'SAVE':   'save',
         'REMOVE': 'remove',
         'SEARCH': 'search',
         'SELECT': 'select',
@@ -49,8 +50,17 @@ export default {
             this.state.merge(['fleet', 'veiculos', index], veiculo)
         },
 
-        add (veiculo) {
-            this.state.push(['fleet', 'veiculos'], veiculo)
+        save (veiculo) {
+            let veiculos = this.state.get('fleet').veiculos
+            let index = veiculos.indexOf(veiculo)
+
+            if (index > -1) {
+                // update
+                this.state.merge(['fleet', 'veiculos', index], veiculo)
+            } else {
+                // insert
+                this.state.push(['fleet', 'veiculos'], veiculo)
+            }
         },
 
         search (query) {

@@ -40,7 +40,7 @@
                         <td class="">
                             <toggle target="veiculo.selecionado" on-change="$ctrl.select(veiculo)"></toggle>
                         </td>
-                        <td>{{ ::veiculo.placa }}</td>
+                        <td class="up">{{ ::veiculo.placa }}</td>
                         <td>{{ ::veiculo.modelo }}</td>
                         <td>{{ ::veiculo.marca }}</td>
                         <td>
@@ -102,6 +102,12 @@
                                     <label for="marca" class="col-3 col-form-label">Marca</label>
                                     <div class="col-7">
                                         <input ng-model="$ctrl.veiculo.marca" ng-required="true" class="form-control" type="text" value="" id="marca">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="imagem" class="col-3 col-form-label">Foto</label>
+                                    <div class="col-7">
+                                        <input ng-model="$ctrl.veiculo.imagem" ng-required="true" class="form-control" type="text" value="" id="imagem">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -214,7 +220,7 @@
 
             save (veiculo) 
             {
-                this.flux.dispatch('fleet/ADD', veiculo)
+                this.flux.dispatch('fleet/SAVE', veiculo)
                 this.veiculo = {}
 
                 // close modal
@@ -234,3 +240,8 @@
     }
 </script>
 
+<style scoped>
+    .up {
+        text-transform: uppercase;
+    }
+</style>
