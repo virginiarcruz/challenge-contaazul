@@ -28,10 +28,10 @@
                         </th>
                         <th>Placa</th>
                         <th>Modelo</th>
-                        <th>Marca</th>
-                        <th>Foto</th>
-                        <th>Combustível</th>
-                        <th>Valor</th>
+                        <th class="hidden-xs-down">Marca</th>
+                        <th class="hidden-xs-down">Foto</th>
+                        <th class="hidden-xs-down">Combustível</th>
+                        <th class="hidden-xs-down">Valor</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -42,12 +42,12 @@
                         </td>
                         <td class="up">{{ veiculo.placa }}</td>
                         <td>{{ veiculo.modelo }}</td>
-                        <td>{{ veiculo.marca }}</td>
-                        <td>
+                        <td class="hidden-xs-down">{{ veiculo.marca }}</td>
+                        <td class="hidden-xs-down">
                             <show-image src="veiculo.imagem"></show-image>
                         </td>
-                        <td>{{ veiculo.combustivel }}</td>
-                        <td>{{ veiculo.valor | currency }}</td>
+                        <td class="hidden-xs-down">{{ veiculo.combustivel }}</td>
+                        <td class="hidden-xs-down">{{ veiculo.valor | currency }}</td>
                         <td>
                             <button class="btn btn-sm btn-link" ng-click="$ctrl.edit(veiculo)" data-toggle="modal" data-target="#veiculoModal">
                                 <i class="fa fa-edit text-muted"></i>
