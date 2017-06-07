@@ -1,0 +1,21 @@
+<template>
+    <section class="wrapper">
+      <div class="container text-center">
+        <h2 class="text-muted">Fleet Control</h2>
+        <p class="mt-5">
+          <a ui-sref="fleet" class="btn btn-primary">
+            <i class="fa fa-truck"></i> Fleet
+          </a>
+          <a ui-sref="about" class="btn btn-secondary">
+            <i class="fa fa-heart text-muted"></i> About
+          </a>
+        </p>
+      </div>
+    </section>
+</template>
+
+<style>
+    .wrapper {
+        padding: 100px;
+    }
+</style>

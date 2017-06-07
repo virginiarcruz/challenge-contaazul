@@ -1,5 +1,13 @@
 <template>
-    <div>
-    
+    <div class="offset-3 col-6 mt-5 pd-5">
+        <h1 class="bd-title" id="content">
+            <i class="fa fa-truck"></i> Controle de Frota
+        </h1>
+        <p>Controle de frotas é o registro dos automóveis da empresa, controlando suas atividades logísticas, seus usuários e para quais funções estão destinadas.</p>
+        <p>
+            <a ui-sref="home" class="btn btn-secondary">
+                <i class="fa fa-home text-muted"></i> Home
+            </a>
+        </p>
     </div>
 </template>
