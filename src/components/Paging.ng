@@ -54,7 +54,10 @@
             {
                 this.$inject = ['$scope', '$attrs']
                 this.$scope = $scope
+            }
 
+            $onInit () 
+            {
                 // Hook in our watched items
                 this.$scope.$watchCollection('[$ctrl.page,$ctrl.pageSize,$ctrl.total,$ctrl.disabled]', () => {
                     this._build($attrs);

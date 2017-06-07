@@ -3,7 +3,9 @@
         <action-header>
             <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar">
-                    <button class="btn btn-success mr-2">Novo Carro</button>
+                    <button class="btn btn-success mr-2" data-toggle="modal" data-target="#veiculoModal">
+                        Novo Carro
+                    </button>
                     <button class="btn btn-secondary mr-2" ng-click="$ctrl.removeSelected()" ng-show="$ctrl.selected > 0">
                         Excluir ({{ $ctrl.selected }})
                     </button>
@@ -16,8 +18,8 @@
                 </div>
             </div>
         </action-header>
-        <div class="table-responsive">
-            <table class="table table-default">
+        <div class="table-responsive" ng-show="$ctrl.veiculos.length">
+            <table class="table table-default" >
                 <thead>
                     <tr>
                         <th>
@@ -29,10 +31,11 @@
                         <th>Foto</th>
                         <th>Combustível</th>
                         <th>Valor</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="veiculo in $ctrl.veiculos track by veiculo.placa">
+                    <tr ng-repeat="veiculo in $ctrl.veiculos track by veiculo.placa" ng-class="{'active': veiculo.selecionado}">
                         <td class="">
                             <toggle target="veiculo.selecionado" ng-click="$ctrl.select(veiculo)"></toggle>
                         </td>
@@ -44,10 +47,15 @@
                         </td>
                         <td>{{ ::veiculo.combustivel }}</td>
                         <td>{{ ::veiculo.valor | currency }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-link" ng-click="$ctrl.edit(veiculo)" data-toggle="modal" data-target="#veiculoModal">
+                                <i class="fa fa-edit text-muted"></i>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-            
+
             <nav>
                 <paging
                     page="$ctrl.currentPage" 
@@ -57,8 +65,67 @@
                     total="$ctrl.total"
                     class="justify-content-center">
                 </paging>
-            </na>
+            </nav>
+        </div>
 
+        <div class="alert alert-info text-center" ng-show="!$ctrl.veiculos.length" role="alert">
+            <i class="fa fa-info-circle"></i> Nenhum veiculo encontrado
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="veiculoModal" tabindex="-1" role="dialog" aria-labelledby="veiculoModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="veiculoModalLabel">Novo Carro</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col align-self-center">
+                            <form action="" name="veiculoForm">
+                                <div class="form-group row">
+                                    <label for="placa" class="col-3 col-form-label">Placa</label>
+                                    <div class="col-7">
+                                        <input ng-model="$ctrl.veiculo.placa" ng-required="true" class="form-control" type="text" value="" id="placa">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="modelo" class="col-3 col-form-label">Modelo</label>
+                                    <div class="col-7">
+                                        <input ng-model="$ctrl.veiculo.modelo" ng-required="true" class="form-control" type="text" value="" id="modelo">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="marca" class="col-3 col-form-label">Marca</label>
+                                    <div class="col-7">
+                                        <input ng-model="$ctrl.veiculo.marca" ng-required="true" class="form-control" type="text" value="" id="marca">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="combustivel" class="col-3 col-form-label">Combustível</label>
+                                    <div class="col-7">
+                                        <input ng-model="$ctrl.veiculo.combustivel" ng-required="true" class="form-control" type="text" value="" id="combustivel">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="valor" class="col-3 col-form-label">Valor</label>
+                                    <div class="col-7">
+                                        <input ng-model="$ctrl.veiculo.valor" ng-required="true" class="form-control" type="text" value="" id="valor">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary" ng-disabled="veiculoForm.$invalid" ng-click="$ctrl.save($ctrl.veiculo)">
+                            Salvar Carro
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -124,6 +191,24 @@
             paging (page) 
             {
                 console.log(page)
+            }
+
+            save (veiculo) 
+            {
+                this.veiculos.push(veiculo)
+                this.veiculo = {}
+            }
+
+            edit (veiculo) 
+            {
+                this.veiculo = veiculo
+            }
+
+            removeSelected () 
+            {
+                this.veiculos = this.veiculos.filter(v => !v.selecionado)
+
+                this._updateSelected()
             }
         }
     }
