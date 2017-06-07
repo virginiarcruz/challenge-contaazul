@@ -15,5 +15,4 @@ export default {
     getters: mergeGetters(
         {}, fleet.getters
     )
-        
 }

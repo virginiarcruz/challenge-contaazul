@@ -4,7 +4,7 @@
             <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar">
                     <button class="btn btn-success mr-2">Novo Carro</button>
-                    <button class="btn btn-secondary mr-2" ng-show="$ctrl.selected > 0">
+                    <button class="btn btn-secondary mr-2" ng-click="$ctrl.removeSelected()" ng-show="$ctrl.selected > 0">
                         Excluir ({{ $ctrl.selected }})
                     </button>
                 </div>
@@ -32,7 +32,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="veiculo in $ctrl.veiculos | filter : $ctrl.search ">
+                    <tr ng-repeat="veiculo in $ctrl.veiculos track by veiculo.placa">
                         <td class="">
                             <toggle target="veiculo.selecionado" ng-click="$ctrl.select(veiculo)"></toggle>
                         </td>
@@ -52,6 +52,7 @@
                 <paging
                     page="$ctrl.currentPage" 
                     page-size="$ctrl.pageSize"
+                    paging-action="$ctrl.paging(page)"
                     show-prev-next="true"
                     total="$ctrl.total"
                     class="justify-content-center">
@@ -71,54 +72,36 @@
     export default {
         components: { actionHeader, showImage, toggle, paging },
         controller: class FleetPageCtrl {
-            constructor ($scope) 
+            constructor ($scope, store, flux) 
             {
-                this.$inject = ['$scope']
+                this.$inject = ['$scope', 'store', 'flux']
+
+                this.store = store
+                this.flux = flux
 
                 this.allSelected = false
                 this.selected = 0
 
                 this.currentPage = 1
-                this.pageSize = 5
-                this.total = 3
+                this.pageSize = 2
+                this.total = 0
 
-                this.veiculos = [
-                    {
-                        "combustivel" : "Flex",
-                        "imagem" : null,
-                        "marca" : "Volkswagem",
-                        "modelo" : "Gol",
-                        "placa" : "FFF-5498",
-                        "valor" : 20000
-                    },
-                    {
-                        "combustivel" : "Gasolina",
-                        "imagem" : null,
-                        "marca" : "Volkswagem",
-                        "modelo" : "Fox",
-                        "placa" : "FOX-4125",
-                        "valor" : 20000
-                    },
+                this.veiculos = []
+            }
 
-                    { 
-                        "combustivel" : "Alcool",
-                        "imagem" : "http://carros.ig.com.br/fotos/2010/290_193/Fusca2_290_193.jpg",
-                        "marca" : "Volkswagen",
-                        "modelo" : "Fusca",
-                        "placa" : "PAI-4121",
-                        "valor" : 20000
-                    }
-                ]
-
+            $onInit () 
+            {
+                this.veiculos = this.store.veiculos
+                this.total = this.veiculos.length
             }
 
             selectAll () 
             {
-                this.veiculos.map(veiculo => {
-                    veiculo.selecionado = this.allSelected
-                })
-
-                this._updateSelected()
+                if ( this.allSelected ) {
+                    this.veiculos.map(veiculo => {
+                        this.flux.dispatch('fleet/SELECT', veiculo)
+                    })
+                }
             }
 
             _updateSelected () 
@@ -131,8 +114,16 @@
                 veiculo.selecionado = !veiculo.selecionado
 
                 if (!veiculo.selecionado) this.allSelected = false
+            }
 
-                this._updateSelected()
+            removeSelected () 
+            {
+
+            }
+
+            paging (page) 
+            {
+                console.log(page)
             }
         }
     }
