@@ -138,15 +138,17 @@
 </template>
 
 <script>
+    import { forEach } from 'lodash'
+
     import actionHeader from 'components/ActionHeader'
     import showImage from 'components/ShowImage'
     import toggle from 'components/Toggle'
     import paging from 'components/Paging'
 
-    import { forEach } from 'lodash'
+    import fleetPageNew from './FleetNew'
 
     export default {
-        components: { actionHeader, showImage, toggle, paging },
+        components: { actionHeader, showImage, toggle, paging, fleetPageNew },
         controller: class FleetPageCtrl {
             constructor ($scope, store, flux) 
             {

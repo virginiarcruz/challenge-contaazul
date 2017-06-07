@@ -49,6 +49,11 @@ angular
         url: '/fleet',
         component: 'fleetPage'
     })
+
+    state('fleet-new', {
+        url: '/fleet/new',
+        component: 'fleetPageNew'
+    })
     
     state('about', {
         url: '/about',
