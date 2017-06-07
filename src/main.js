@@ -33,7 +33,7 @@ angular.module('app', [uiRouter, ngLocale, store])
 
     store('about', {
         url: '/about',
-        component: aboutPage
+        component: 'aboutPage'
     })
 
 }]);
