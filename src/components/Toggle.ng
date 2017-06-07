@@ -1,13 +1,20 @@
 <template>
     <label class="custom-control custom-checkbox checkbox">
-        <input type="checkbox" ng-model="$ctrl.target" class="custom-control-input">
+        <input type="checkbox" ng-model="$ctrl.target" ng-change="$ctrl.change($ctrl.target)" class="custom-control-input">
         <span class="custom-control-indicator"></span>
     </label>
 </template>
 
 <script>
     export default {
-        bindings: { target: '=?'}
+        bindings: { target: '<?', onChange: '&?'},
+        controller: class ToggleCtrl 
+        {
+            change (value) 
+            {
+                this.onChange({ value })
+            }
+        }
     }
 </script>
 

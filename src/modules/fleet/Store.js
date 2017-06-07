@@ -1,3 +1,4 @@
+import { split, lowerCase } from 'lodash'
 
 export default {
     module: 'fleet',
@@ -31,19 +32,51 @@ export default {
     handlers: {
         'UPDATE': 'update',
         'ADD': 'add',
-        'REMOVE': 'remove'
+        'REMOVE': 'remove',
+        'SEARCH': 'search',
+        'SELECT': 'select',
+        'SELECT_ALL': 'selectAll'
     },
     actions: {
-        update () {
-            this.state.merge('veiculos', veiculo)
+        update (veiculo) {
+            let veiculos = this.state.get('fleet').veiculos
+            let index = veiculos.indexOf(veiculo)
+
+            this.state.merge(['fleet', 'veiculos', index], veiculo)
         },
 
         add (veiculo) {
-            this.state.push('veiculos', veiculo)
+            this.state.push(['fleet', 'veiculos'], veiculo)
         },
 
-        remove () {
+        search (query) {
+            this.state.set(['fleet', 'search'], query)
+        },
 
+        remove (veiculo) {
+            let veiculos = this.state.get('fleet').veiculos
+            let index = veiculos.indexOf(veiculo)
+
+            this.state.unset(['fleet', 'veiculos', index])
+        },
+
+        select (veiculo) {
+            let veiculos = this.state.get('fleet').veiculos
+            let index = veiculos.indexOf(veiculo)
+
+            this.state.merge(['fleet', 'veiculos', index], {
+                selecionado: !veiculo.selecionado
+            })
+        },
+
+        selectAll (selecionado) {
+            let veiculos = this.state.get('fleet').veiculos
+
+            veiculos.map( (veiculo, index) => {
+                this.state.merge(['fleet', 'veiculos', index], {
+                    selecionado
+                })
+            })
         }
     },
     getters: {
@@ -52,8 +85,12 @@ export default {
 
             return fleet.veiculos.filter( veiculo => {
                 return (
-                    veiculo.combustivel.indexOf(fleet.search) > -1 ||
-                    veiculo.marca.indexOf(fleet.search) > -1
+                    veiculo.combustivel.toLowerCase().indexOf(
+                        fleet.search.toLowerCase()
+                    ) > -1 ||
+                    veiculo.marca.toLowerCase().indexOf(
+                        fleet.search.toLowerCase()
+                    ) > -1
                 )
             })
         }

@@ -23,7 +23,7 @@
                 <thead>
                     <tr>
                         <th>
-                            <toggle target="$ctrl.allSelected" ng-click="$ctrl.selectAll()"></toggle>
+                            <toggle on-change="$ctrl.selectAll(value)"></toggle>
                         </th>
                         <th>Placa</th>
                         <th>Modelo</th>
@@ -35,9 +35,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="veiculo in $ctrl.veiculos track by veiculo.placa" ng-class="{'active': veiculo.selecionado}">
+                    <tr ng-repeat="veiculo in $ctrl.veiculos track by veiculo.placa | limitTo: 2" ng-class="{'active': veiculo.selecionado}">
                         <td class="">
-                            <toggle target="veiculo.selecionado" ng-click="$ctrl.select(veiculo)"></toggle>
+                            <toggle target="veiculo.selecionado" on-change="$ctrl.select(veiculo)"></toggle>
                         </td>
                         <td>{{ ::veiculo.placa }}</td>
                         <td>{{ ::veiculo.modelo }}</td>
@@ -136,6 +136,8 @@
     import toggle from 'components/Toggle'
     import paging from 'components/Paging'
 
+    import { forEach } from 'lodash'
+
     export default {
         components: { actionHeader, showImage, toggle, paging },
         controller: class FleetPageCtrl {
@@ -146,7 +148,6 @@
                 this.store = store
                 this.flux = flux
 
-                this.allSelected = false
                 this.selected = 0
 
                 this.currentPage = 1
@@ -154,21 +155,36 @@
                 this.total = 0
 
                 this.veiculos = []
+
+                $scope.$listenTo(store, ['fleet', 'veiculos'], () => {
+                    this._updateVeiculos()
+                })
+
+                $scope.$listenTo(store, ['fleet', 'search'], () => {
+                    this._updateVeiculos()
+                })
+
+                $scope.$watch('$ctrl.search', (query) => {
+                    flux.dispatch('fleet/SEARCH', query || '')
+                })
             }
 
             $onInit () 
             {
-                this.veiculos = this.store.veiculos
-                this.total = this.veiculos.length
+                this._updateVeiculos()
             }
 
-            selectAll () 
+            _updateVeiculos () 
             {
-                if ( this.allSelected ) {
-                    this.veiculos.map(veiculo => {
-                        this.flux.dispatch('fleet/SELECT', veiculo)
-                    })
-                }
+                this.veiculos = this.store.veiculos
+                this.total = this.veiculos.length
+
+                this._updateSelected()
+            }
+
+            selectAll (value) 
+            {
+                this.flux.dispatch('fleet/SELECT_ALL', value)
             }
 
             _updateSelected () 
@@ -178,24 +194,24 @@
 
             select (veiculo) 
             {
-                veiculo.selecionado = !veiculo.selecionado
-
-                if (!veiculo.selecionado) this.allSelected = false
+                this.flux.dispatch('fleet/SELECT', veiculo)
             }
 
             removeSelected () 
             {
-
+                forEach(this.veiculos, veiculo => {
+                    if (veiculo.selecionado) this.remove(veiculo)
+                })
             }
 
             paging (page) 
             {
-                console.log(page)
+                this.currentPage = page
             }
 
             save (veiculo) 
             {
-                this.veiculos.push(veiculo)
+                this.flux.dispatch('fleet/ADD', veiculo)
                 this.veiculo = {}
             }
 
@@ -204,11 +220,9 @@
                 this.veiculo = veiculo
             }
 
-            removeSelected () 
+            remove (veiculo) 
             {
-                this.veiculos = this.veiculos.filter(v => !v.selecionado)
-
-                this._updateSelected()
+                this.flux.dispatch('fleet/REMOVE', veiculo)
             }
         }
     }
