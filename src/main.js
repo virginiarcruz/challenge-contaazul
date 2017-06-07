@@ -9,12 +9,15 @@ import ngLocale from 'angular-i18n/pt-br'
 
 import app from './App'
 import store from './store'
+import services from './services'
 
 import homePage  from './modules/home/HomePage'
 import fleetPage from './modules/fleet/FleetPage'
 import aboutPage from './modules/about/AboutPage'
 
-angular.module('app', [uiRouter, ngLocale, store])
+angular
+
+.module('app', [uiRouter, ngLocale, store, services])
 .components( { app, homePage, fleetPage, aboutPage })
 
 .directive('caPopover', function () {
