@@ -47,6 +47,17 @@
                     </tr>
                 </tbody>
             </table>
+            
+            <nav>
+                <paging
+                    page="$ctrl.currentPage" 
+                    page-size="$ctrl.pageSize"
+                    show-prev-next="true"
+                    total="$ctrl.total"
+                    class="justify-content-center">
+                </paging>
+            </na>
+
         </div>
     </div>
 </template>
@@ -55,9 +66,10 @@
     import actionHeader from 'components/ActionHeader'
     import showImage from 'components/ShowImage'
     import toggle from 'components/Toggle'
+    import paging from 'components/Paging'
 
     export default {
-        components: { actionHeader, showImage, toggle },
+        components: { actionHeader, showImage, toggle, paging },
         controller: class FleetPageCtrl {
             constructor ($scope) 
             {
@@ -65,7 +77,11 @@
 
                 this.allSelected = false
                 this.selected = 0
-                
+
+                this.currentPage = 1
+                this.pageSize = 5
+                this.total = 3
+
                 this.veiculos = [
                     {
                         "combustivel" : "Flex",

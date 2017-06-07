@@ -19,13 +19,20 @@ $gray:                      #464a4c;
 $gray-light:                #636c72;
 $gray-lighter:              #eceeef;
 $gray-lightest:             #f7f7f9;
+$blue-lighter:              #d9eafb;
+$yellow-lighter:            #fffaec;
 
 $body-color:    $gray-dark;
 $input-color:   $gray-dark;
 
+// components
+$border-radius:          .15rem;
+$border-radius-lg:       .3rem;
+$border-radius-sm:       .2rem;
+
 // forms
 $input-padding-x:   1rem;
-$input-padding-y:   .7rem;
+$input-padding-y:   .6rem;
 $input-line-height: 1.25;
 
 $input-color-placeholder:   #9CA5AC;
@@ -38,8 +45,14 @@ $btn-padding-x: 2em;
 $table-border-color:        #c9d3dd;
 $table-cell-padding:          .75rem;
 
-$custom-control-indicator-size:       1.5rem;
+$custom-control-indicator-size:       1.3rem;
 $custom-control-indicator-bg:         #fff;
+
+// pagination
+$pagination-active-color:              $gray-dark;
+$pagination-active-bg:                 $blue-lighter;
+$pagination-active-border:             #9ccef5;
+$pagination-hover-bg:                  $yellow-lighter;
 
 // --
 .bg-contaazul {
@@ -54,9 +67,15 @@ $custom-control-indicator-bg:         #fff;
     cursor: pointer;
 }
 
-.table-default {
+.table.table-default {
     border: 1px solid #C9D3DD;
-    background-color: #F8FAFC;
+    thead th {
+        vertical-align: bottom;
+        border-bottom: $table-border-width solid $table-border-color;
+    }
+    td {
+        background-color: #FFFFFF;
+    }
     border-collapse: collapse;
 }
 

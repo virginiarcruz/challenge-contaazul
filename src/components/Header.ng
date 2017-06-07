@@ -2,9 +2,15 @@
   <nav class="navbar navbar-light bg-contaazul">
       <div class="container">
         <a class="navbar-brand" href="#">
-          <img src="~assets/logo-contaazul.svg" alt="">
+          <img class="logo" src="~assets/logo-contaazul.svg" alt="">
         </a>
       </div>
   </nav>
 </template>
+
+<style scoped>
+  .logo {
+    vertical-align: baseline;
+  }
+</style>
 

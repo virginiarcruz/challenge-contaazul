@@ -1,0 +1,407 @@
+<template>
+    <ul ng-hide="$ctrl.Hide" 
+        ng-class="$ctrl.ulClass" 
+        class="pagination">
+        <li title="{{ Item.title }}"
+            class="page-item"
+            ng-class="Item.liClass"
+            ng-repeat="Item in $ctrl.List">
+            <a  ng-href="{{ Item.pgHref || $ctrl.href }}"
+                ng-class="Item.aClass"
+                ng-click="Item.action()"
+                ng-bind="Item.value"
+                class="page-link">
+            </a>
+        </li>
+    </ul> 
+</template>
+
+<script>
+
+    const regex = /\{page\}/g;
+
+    export default {
+        bindings: {
+            page: '=',
+            pageSize: '=',
+            total: '=',
+            disabled: '@',
+            dots: '@',
+            ulClass: '@',
+            activeClass: '@',
+            disabledClass: '@',
+            adjacent: '@',
+            pagingAction: '&',
+            pgHref: '@',
+            textFirst: '@',
+            textLast: '@',
+            textNext: '@',
+            textPrev: '@',
+            textFirstClass: '@',
+            textLastClass: '@',
+            textNextClass: '@',
+            textPrevClass: '@',
+            textTitlePage: '@',
+            textTitleFirst: '@',
+            textTitleLast: '@',
+            textTitleNext: '@',
+            textTitlePrev: '@'
+        },
+
+        controller: class PagingCtrl 
+        {
+            constructor ($scope, $attrs) 
+            {
+                this.$inject = ['$scope', '$attrs']
+                this.$scope = $scope
+
+                // Hook in our watched items
+                this.$scope.$watchCollection('[$ctrl.page,$ctrl.pageSize,$ctrl.total,$ctrl.disabled]', () => {
+                    this._build($attrs);
+                });
+            }
+
+            _build (attrs) 
+            {
+                // Block divide by 0 and empty page size
+                if (!this.pageSize || this.pageSize <= 0) {
+                    this.pageSize = 1;
+                }
+
+                // Determine the last page or total page count
+                var pageCount = Math.ceil(this.total / this.pageSize);
+
+                // Set the default this values where needed
+                this._setScopeValues(attrs);
+
+                // Validate the this values to protect against strange states
+                this._validateScopeValues(pageCount);
+
+                // Create the beginning and end page values
+                var start, finish;
+
+                // Calculate the full adjacency value
+                var fullAdjacentSize = (this.adjacent * 2) + 2;
+
+
+                // Add the Next and Previous buttons to our list
+                this._addPrevNext(pageCount, 'prev');
+
+                // If the page count is less than the full adjacnet size
+                // Then we simply display all the pages, Otherwise we calculate the proper paging display
+                if (pageCount <= (fullAdjacentSize + 2)) {
+
+                    start = 1;
+                    this._addRange(start, pageCount);
+
+                } else {
+
+                    // Determine if we are showing the beginning of the paging list
+                    // We know it is the beginning if the page - adjacent is <= 2
+                    if (this.page - this.adjacent <= 2) {
+
+                        start = 1;
+                        finish = 1 + fullAdjacentSize;
+
+                        this._addRange(start, finish);
+                        this._addLast(pageCount, finish);
+                    }
+
+                    // Determine if we are showing the middle of the paging list
+                    // We know we are either in the middle or at the end since the beginning is ruled out above
+                    // So we simply check if we are not at the end
+                    // Again 2 is hard coded as we always display two pages after the dots
+                    else if (this.page < pageCount - (this.adjacent + 2)) {
+
+                        start = this.page - this.adjacent;
+                        finish = this.page + this.adjacent;
+
+                        this._addFirst(start);
+                        this._addRange(start, finish);
+                        this._addLast(pageCount, finish);
+                    }
+
+                    // If nothing else we conclude we are at the end of the paging list
+                    // We know this since we have already ruled out the beginning and middle above
+                    else {
+
+                        start = pageCount - fullAdjacentSize;
+                        finish = pageCount;
+
+                        this._addFirst(start);
+                        this._addRange(start, finish);
+                    }
+                }
+
+                // Add the next and last buttons to our paging list
+                this._addPrevNext(pageCount, 'next');
+            }
+
+            _evalBoolAttribute (value) 
+            {
+                return angular.isDefined(value)
+                    ? !!this.$scope.$eval(value)
+                    : false;
+            }
+
+            _validateScopeValues (pageCount) 
+            {
+                // Block where the page is larger than the pageCount
+                if (this.page > pageCount) {
+                    this.page = pageCount;
+                }
+
+                // Block where the page is less than 0
+                if (this.page <= 0) {
+                    this.page = 1;
+                }
+
+                // Block where adjacent value is 0 or below
+                if (this.adjacent <= 0) {
+                    this.adjacent = 2;
+                }
+
+                // Hide from page if we have 1 or less pages
+                // if directed to hide empty
+                if (pageCount <= 1) {
+                    this.Hide = this.hideIfEmpty;
+                }
+            }
+
+            _internalAction (page) 
+            {
+                // Block clicks we try to load the active page
+                if (this.page == page) {
+                    return;
+                }
+
+                // Block if we are forcing disabled 
+                if(this.isDisabled)
+                {
+                    return;
+                }
+
+                // Update the page in this
+                this.page = page;
+
+                // Pass our parameters to the paging action
+                this.pagingAction({
+                    page: this.page,
+                    pageSize: this.pageSize,
+                    total: this.total
+                });
+
+                // If allowed scroll up to the top of the page
+                if (this.scrollTop) {
+                    scrollTo(0, 0);
+                }
+            }
+
+            _addPrevNext (pageCount, mode) 
+            {
+                // Ignore if we are not showing
+                // or there are no pages to display
+                if ((!this.showPrevNext && !this.showFirstLast) || pageCount < 1) {
+                    return;
+                }
+
+                // Local variables to help determine logic
+                var disabled, alpha, beta;
+
+                // Determine logic based on the mode of interest
+                // Calculate the previous / next page and if the click actions are allowed
+                if (mode === 'prev') {
+
+                    disabled = this.page - 1 <= 0;
+                    var prevPage = this.page - 1 <= 0 ? 1 : this.page - 1;
+
+                    if(this.showFirstLast){
+                        alpha = {
+                            value: this.textFirst,
+                            title: this.textTitleFirst, 
+                            aClass: this.textFirstClass,
+                            page: 1
+                        };                
+                    }
+
+                    if(this.showPrevNext){
+                        beta = {
+                            value: this.textPrev,
+                            title: this.textTitlePrev, 
+                            aClass: this.textPrevClass,
+                            page: prevPage
+                        };    
+                    }
+
+                } else {
+
+                    disabled = this.page + 1 > pageCount;
+                    var nextPage = this.page + 1 >= pageCount ? pageCount : this.page + 1;
+
+                    if(this.showPrevNext){
+                        alpha = {
+                            value: this.textNext,
+                            title: this.textTitleNext, 
+                            aClass: this.textNextClass,
+                            page: nextPage
+                        };    
+                    }
+                    
+                    if(this.showFirstLast){
+                        beta = {
+                            value: this.textLast,
+                            title: this.textTitleLast, 
+                            aClass: this.textLastClass,
+                            page: pageCount
+                        };    
+                    }
+                    
+                }
+
+                // Create the Add Item Function
+                var buildItem = (item, disabled) => {
+                    return {
+                        title: item.title,
+                        aClass: item.aClass,
+                        value: item.aClass ? '' : item.value,
+                        liClass: disabled ? this.disabledClass : '',
+                        pgHref: disabled ? '' : this.pgHref.replace(regex, item.page),
+                        action: () => {
+                            if (!disabled) {
+                                this._internalAction(item.page);
+                            }
+                        }
+                    };    
+                };
+
+                // Force disabled if specified
+                if(this.isDisabled){
+                    disabled = true;
+                }
+
+                // Add alpha items
+                if(alpha){
+                    var alphaItem = buildItem(alpha, disabled);
+                    this.List.push(alphaItem);    
+                }
+                
+                // Add beta items
+                if(beta){
+                    var betaItem = buildItem(beta, disabled);
+                    this.List.push(betaItem);    
+                }
+            }
+
+            _addRange(start, finish) 
+            {
+                let self = this
+                // Add our items where i is the page number
+                var i = 0;
+                for (i = start; i <= finish; i++) {
+
+                    var pgHref = this.pgHref.replace(regex, i);
+                    var liClass = this.page == i ? this.activeClass : ''; 
+
+                    // Handle items that are affected by disabled
+                    if(this.isDisabled){
+                        pgHref = '';
+                        liClass = this.disabledClass;
+                    }
+
+                    this.List.push({
+                        value: i,
+                        title: this.textTitlePage.replace(regex, i),
+                        liClass: liClass,
+                        pgHref: pgHref,
+                        action () {
+                            self._internalAction(this.value);
+                        }
+                    });
+                }
+            }
+
+            _addDots () 
+            {
+                this.List.push({
+                    value: this.dots,
+                    liClass: this.disabledClass
+                });
+            }
+
+            _addFirst(next) 
+            {
+                this._addRange(1, 2);
+
+                // We ignore dots if the next value is 3
+                // ie: 1 2 [...] 3 4 5 becomes just 1 2 3 4 5
+                if (next != 3) {
+                    this._addDots();
+                }
+            }
+
+            _addLast(pageCount, prev) 
+            {
+                // We ignore dots if the previous value is one less that our start range
+                // ie: 1 2 3 4 [...] 5 6  becomes just 1 2 3 4 5 6
+                if (prev != pageCount - 2) {
+                    this._addDots();
+                }
+
+                this._addRange(pageCount - 1, pageCount);
+            }
+
+            _setScopeValues (attrs)
+            {
+                this.List = [];
+                this.Hide = false;
+                
+                this.page = parseInt(this.page) || 1;
+                this.total = parseInt(this.total) || 0;
+                this.adjacent = parseInt(this.adjacent) || 2;
+
+                this.pgHref = this.pgHref || '';
+                this.dots = this.dots || '...';
+                
+                this.ulClass = this.ulClass || 'pagination';
+                this.activeClass = this.activeClass || 'active';
+                this.disabledClass = this.disabledClass || 'disabled';
+
+                this.textFirst = this.textFirst || '<<';
+                this.textLast = this.textLast || '>>';
+                this.textNext = this.textNext || '>';
+                this.textPrev = this.textPrev || '<';
+                
+                this.textFirstClass = this.textFirstClass || '';
+                this.textLastClass= this.textLastClass || '';
+                this.textNextClass = this.textNextClass || 'fa fa-angle-double-right next';
+                this.textPrevClass = this.textPrevClass || 'fa fa-angle-double-left prev';
+
+                this.textTitlePage = this.textTitlePage || 'Page {page}';
+                this.textTitleFirst = this.textTitleFirst || 'First Page'; 
+                this.textTitleLast = this.textTitleLast || 'Last Page'; 
+                this.textTitleNext = this.textTitleNext || 'Next Page'; 
+                this.textTitlePrev = this.textTitlePrev || 'Previous Page'; 
+
+                this.hideIfEmpty = this._evalBoolAttribute(attrs.hideIfEmpty);
+                this.showPrevNext = this._evalBoolAttribute(attrs.showPrevNext);
+                this.showFirstLast = this._evalBoolAttribute(attrs.showFirstLast);
+                this.scrollTop = this._evalBoolAttribute(attrs.scrollTop);
+                this.isDisabled = this._evalBoolAttribute(attrs.disabled);
+            }
+        }
+    }
+</script>
+
+<style scoped>
+    .page-item {
+        user-select: none;
+    }
+
+    .page-link {
+        cursor: default;
+    }
+
+    .next, .prev {
+        font-weight: bold;
+    }
+</style>
