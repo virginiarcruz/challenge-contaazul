@@ -11,9 +11,9 @@ import app from './App'
 import store from './store'
 import services from './services'
 
-import homePage  from './modules/home/HomePage'
-import fleetPage from './modules/fleet/FleetPage'
-import aboutPage from './modules/about/AboutPage'
+import homePage  from './views/home/HomePage'
+import fleetPage from './views/fleet/FleetPage'
+import aboutPage from './views/about/AboutPage'
 
 angular
 

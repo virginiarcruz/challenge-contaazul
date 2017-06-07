@@ -1,6 +1,6 @@
 import { mapState, mapHandlers , mapActions, mergeGetters } from './helpers'
 
-import fleet from '@/modules/fleet/Store'
+import fleet from '@/views/fleet/Store'
 
 export default {
     state: {
