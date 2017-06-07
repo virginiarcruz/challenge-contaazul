@@ -229,6 +229,7 @@
 
             edit (veiculo) 
             {
+                console.log(veiculo)
                 this.veiculo = veiculo
             }
 
