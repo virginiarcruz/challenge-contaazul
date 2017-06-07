@@ -10,9 +10,10 @@ import ngLocale from 'angular-i18n/pt-br'
 import app from './App'
 import store from './store'
 import fleetPage from './modules/fleet/FleetPage'
+import aboutPage from './modules/about/AboutPage'
 
 angular.module('app', [uiRouter, ngLocale, store])
-.components( { app, fleetPage })
+.components( { app, fleetPage, aboutPage })
 
 .directive('caPopover', function () {
     return {
@@ -28,6 +29,11 @@ angular.module('app', [uiRouter, ngLocale, store])
     state('fleet', {
         url: '',
         component: 'fleetPage'
+    })
+
+    store('about', {
+        url: '/about',
+        component: aboutPage
     })
 
 }]);

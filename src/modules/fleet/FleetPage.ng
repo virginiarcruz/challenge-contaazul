@@ -216,6 +216,9 @@
             {
                 this.flux.dispatch('fleet/ADD', veiculo)
                 this.veiculo = {}
+
+                // close modal
+                $('#veiculoModal').modal('hide')
             }
 
             edit (veiculo) 
