@@ -69,18 +69,25 @@ $pagination-hover-bg:                  $yellow-lighter;
 
 .table.table-default {
     border: 1px solid #C9D3DD;
-    thead th {
+    th {
         vertical-align: bottom;
         border-bottom: $table-border-width solid $table-border-color;
     }
     td {
-        background-color: #FFFFFF;
-    }
-    border-collapse: collapse;
-}
-
-.table.table-default {
-    td {
         padding: ($table-cell-padding + .2rem) $table-cell-padding
     }
+    tbody {
+        background-color: #FFFFFF;
+    }
+    tr {
+        &.active {
+            background-color: $blue-lighter;
+            border: 1px solid #9ccef5;
+            td {
+                border-top: 1px solid #9ccef5;
+                border-bottom: 1px solid #9ccef5;
+            }
+        }
+    }
+    border-collapse: collapse;
 }
