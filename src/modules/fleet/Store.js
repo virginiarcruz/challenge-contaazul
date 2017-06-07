@@ -4,6 +4,9 @@ export default {
     module: 'fleet',
     state: {
         search: '',
+        currentPage: 1,
+        pageSize: 2,
+        total: 0,
         veiculos: [{
             "combustivel" : "Flex",
             "imagem" : null,
@@ -35,7 +38,8 @@ export default {
         'REMOVE': 'remove',
         'SEARCH': 'search',
         'SELECT': 'select',
-        'SELECT_ALL': 'selectAll'
+        'SELECT_ALL': 'selectAll',
+        'UPDATE_PAGE': 'updatePage'
     },
     actions: {
         update (veiculo) {
@@ -77,13 +81,19 @@ export default {
                     selecionado
                 })
             })
+        },
+
+        updatePage (page) {
+            this.state.set(['fleet', 'currentPage'], page)
         }
     },
     getters: {
         get veiculos () {
             let fleet = this.state.get('fleet')
+            let start = (fleet.currentPage * fleet.pageSize) - fleet.pageSize
+            let end   = fleet.currentPage * fleet.pageSize
 
-            return fleet.veiculos.filter( veiculo => {
+            let filtered = fleet.veiculos.filter( veiculo => {
                 return (
                     veiculo.combustivel.toLowerCase().indexOf(
                         fleet.search.toLowerCase()
@@ -93,6 +103,19 @@ export default {
                     ) > -1
                 )
             })
+            
+            // define total
+            this.state.set(['fleet', 'total'], filtered.length)
+
+            return filtered.slice(start, end)
+        },
+
+        get totalVeiculos () {
+            return this.state.get('fleet').total
+        },
+
+        get pageSize () {
+            return this.state.get('fleet').pageSize
         }
     }
 }

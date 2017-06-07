@@ -23,14 +23,6 @@ angular.module('app', [uiRouter, ngLocale, store])
     }
 })
 
-.filter('startFrom', function() {
-    return function(input, start) {
-        // parse to int
-        start = +start; 
-        return input.slice(start);
-    }
-})
-
 .config(['$stateProvider', ({ state }) => {
 
     state('fleet', {
