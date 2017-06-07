@@ -3,7 +3,7 @@
         <action-header>
             <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar">
-                    <button class="btn btn-success mr-2" data-toggle="modal" data-target="#veiculoModal">
+                    <button class="btn btn-success mr-2" ng-click="$ctrl.add()">
                         Novo Carro
                     </button>
                     <button class="btn btn-secondary mr-2" ng-click="$ctrl.removeSelected()" ng-show="$ctrl.selected > 0">
@@ -40,14 +40,14 @@
                         <td class="">
                             <toggle target="veiculo.selecionado" on-change="$ctrl.select(veiculo)"></toggle>
                         </td>
-                        <td class="up">{{ ::veiculo.placa }}</td>
-                        <td>{{ ::veiculo.modelo }}</td>
-                        <td>{{ ::veiculo.marca }}</td>
+                        <td class="up">{{ veiculo.placa }}</td>
+                        <td>{{ veiculo.modelo }}</td>
+                        <td>{{ veiculo.marca }}</td>
                         <td>
                             <show-image src="veiculo.imagem"></show-image>
                         </td>
-                        <td>{{ ::veiculo.combustivel }}</td>
-                        <td>{{ ::veiculo.valor | currency }}</td>
+                        <td>{{ veiculo.combustivel }}</td>
+                        <td>{{ veiculo.valor | currency }}</td>
                         <td>
                             <button class="btn btn-sm btn-link" ng-click="$ctrl.edit(veiculo)" data-toggle="modal" data-target="#veiculoModal">
                                 <i class="fa fa-edit text-muted"></i>
@@ -78,7 +78,9 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="veiculoModalLabel">Novo Carro</h5>
+                        <h5 class="modal-title" id="veiculoModalLabel">
+                            {{ $ctrl.veiculo.id ? 'Atualizar' : 'Adicionar' }} veículo
+                        </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -86,28 +88,28 @@
                     <div class="modal-body">
                         <div class="col align-self-center">
                             <form action="" name="veiculoForm">
-                                <div class="form-group row">
+                                <div class="form-group row" ng-class="{ 'has-danger' : veiculoForm.placa.$invalid && !veiculoForm.placa.$pristine }">
                                     <label for="placa" class="col-3 col-form-label">Placa</label>
                                     <div class="col-7">
-                                        <input ng-model="$ctrl.veiculo.placa" ng-required="true" class="form-control" type="text" value="" id="placa">
+                                        <input ng-model="$ctrl.veiculo.placa" length="8" ng-required="true" class="form-control" type="text" value="" id="placa">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="modelo" class="col-3 col-form-label">Modelo</label>
                                     <div class="col-7">
-                                        <input ng-model="$ctrl.veiculo.modelo" ng-required="true" class="form-control" type="text" value="" id="modelo">
+                                        <input ng-model="$ctrl.veiculo.modelo" length="30" ng-required="true" class="form-control" type="text" value="" id="modelo">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="marca" class="col-3 col-form-label">Marca</label>
                                     <div class="col-7">
-                                        <input ng-model="$ctrl.veiculo.marca" ng-required="true" class="form-control" type="text" value="" id="marca">
+                                        <input ng-model="$ctrl.veiculo.marca" length="30" ng-required="true" class="form-control" type="text" value="" id="marca">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="imagem" class="col-3 col-form-label">Foto</label>
                                     <div class="col-7">
-                                        <input ng-model="$ctrl.veiculo.imagem" ng-required="true" class="form-control" type="text" value="" id="imagem">
+                                        <input ng-model="$ctrl.veiculo.imagem" ng-required="false" class="form-control" type="text" value="" id="imagem">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -128,7 +130,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                         <button type="button" class="btn btn-primary" ng-disabled="veiculoForm.$invalid" ng-click="$ctrl.save($ctrl.veiculo)">
-                            Salvar Carro
+                            {{ $ctrl.veiculo.id ? 'Atualizar' : 'Adicionar' }}
                         </button>
                     </div>
                 </div>
@@ -223,14 +225,21 @@
                 this.flux.dispatch('fleet/SAVE', veiculo)
                 this.veiculo = {}
 
+                this._veiculos()
+
                 // close modal
                 $('#veiculoModal').modal('hide')
             }
 
+            add () 
+            {
+                this.veiculo = {}
+                $('#veiculoModal').modal('show')
+            }
+
             edit (veiculo) 
             {
-                console.log(veiculo)
-                this.veiculo = veiculo
+                this.veiculo = angular.copy(veiculo)
             }
 
             remove (veiculo) 

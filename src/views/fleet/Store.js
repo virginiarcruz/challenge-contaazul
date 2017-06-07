@@ -8,7 +8,10 @@ export default {
         pageSize: 5,
         selectedIndex: 0,
         total: 0,
-        veiculos: [{
+        veiculos: 
+        // @TODO implements api[GET] with axios
+        [{
+            "id": 1,
             "combustivel" : "Flex",
             "imagem" : null,
             "marca" : "Volkswagem",
@@ -17,6 +20,7 @@ export default {
             "valor" : 20000
         },
         {
+            "id": 2,
             "combustivel" : "Gasolina",
             "imagem" : null,
             "marca" : "Volkswagem",
@@ -25,6 +29,7 @@ export default {
             "valor" : 20000
         },
         { 
+            "id": 3,
             "combustivel" : "Alcool",
             "imagem" : "http://carros.ig.com.br/fotos/2010/290_193/Fusca2_290_193.jpg",
             "marca" : "Volkswagen",
@@ -51,16 +56,22 @@ export default {
         },
 
         save (veiculo) {
+
             let veiculos = this.state.get('fleet').veiculos
             let index = veiculos.indexOf(veiculo)
-
-            if (index > -1) {
-                // update
+            
+            if (veiculo.id) {
+                let old = veiculos.find(v => v.id == veiculo.id)
+                let index = veiculos.indexOf(old)
+                
+                // @TODO implements api[PUT] with axios
                 this.state.merge(['fleet', 'veiculos', index], veiculo)
             } else {
-                // insert
+                // @TODO implements api[POST] with axios
+                veiculo.id = (veiculos[veiculos.length - 1].id + 1)
                 this.state.push(['fleet', 'veiculos'], veiculo)
             }
+
         },
 
         search (query) {
@@ -71,6 +82,7 @@ export default {
             let veiculos = this.state.get('fleet').veiculos
             let index = veiculos.indexOf(veiculo)
 
+            // @TODO implements api[DELETE] with axios
             this.state.unset(['fleet', 'veiculos', index])
         },
 
@@ -99,6 +111,9 @@ export default {
     },
     getters: {
         get veiculos () {
+
+            // @TODO implements api[GET] with axios
+
             let fleet = this.state.get('fleet')
             let start = (fleet.currentPage * fleet.pageSize) - fleet.pageSize
             let end   = fleet.currentPage * fleet.pageSize
