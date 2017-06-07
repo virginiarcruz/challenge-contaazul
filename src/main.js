@@ -6,6 +6,7 @@ require('bootstrap')
 import angular  from 'angular'
 import uiRouter from 'angular-ui-router'
 import ngLocale from 'angular-i18n/pt-br'
+import uiBrMask from 'angular-input-masks/br'
 
 import app from './App'
 import store from './store'
@@ -17,7 +18,7 @@ import aboutPage from './views/about/AboutPage'
 
 angular
 
-.module('app', [uiRouter, ngLocale, store, services])
+.module('app', [uiRouter, ngLocale, uiBrMask, store, services])
 .components( { app, homePage, fleetPage, aboutPage })
 
 .directive('caPopover', function () {
