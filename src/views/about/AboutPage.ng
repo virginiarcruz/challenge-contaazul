@@ -1,7 +1,7 @@
 <template>
     <div class="col-xs-12 col-md-8 col-sm-6 mt-5 mx-auto">
         <h1 class="bd-title" id="content">
-            <i class="fa fa-truck"></i> Controle de Frota
+            <i class="fa fa-truck"></i> Controle de frotas
         </h1>
         <p>Controle de frotas é o registro dos automóveis da empresa, controlando suas atividades logísticas, seus usuários e para quais funções estão destinadas.</p>
         <p>

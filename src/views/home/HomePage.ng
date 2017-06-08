@@ -1,10 +1,10 @@
 <template>
     <section>
       <div class="text-center mt-5">
-        <h2 class="text-muted">Fleet Control</h2>
+        <h2 class="text-muted">Controle de frotas</h2>
         <p class="mt-5">
           <a ui-sref="fleet" class="btn btn-primary">
-            <i class="fa fa-truck"></i> Fleet
+            <i class="fa fa-truck"></i> Frotas
           </a>
           <a ui-sref="about" class="btn btn-secondary">
             <i class="fa fa-heart text-muted"></i> About
