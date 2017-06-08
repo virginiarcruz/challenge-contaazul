@@ -78,7 +78,7 @@ $pagination-hover-bg:                  $yellow-lighter;
         padding: ($table-cell-padding + .2rem) $table-cell-padding
     }
     tbody {
-        background-color: #FFFFFF;
+        background-color: $white;
     }
     tr {
         &.active {
