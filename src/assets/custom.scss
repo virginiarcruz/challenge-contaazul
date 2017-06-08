@@ -1,4 +1,5 @@
 @import '~bootstrap/scss/variables';
+@import '~toastr/toastr';
 
 // colors
 $white:  #fff;
@@ -8,7 +9,7 @@ $orange: #f0ad4e;
 $yellow: #ffd500;
 $green:  #5cb85c;
 $blue:   #2687e9;
-$teal:   #5bc0de;
+$teal:   #9ccef5;
 $pink:   #ff5b77;
 $purple: #613d7c;
 $gray:   #3f5e7b;
@@ -51,7 +52,7 @@ $custom-control-indicator-bg:         #fff;
 // pagination
 $pagination-active-color:              $gray-dark;
 $pagination-active-bg:                 $blue-lighter;
-$pagination-active-border:             #9ccef5;
+$pagination-active-border:             $teal;
 $pagination-hover-bg:                  $yellow-lighter;
 
 // --
@@ -68,7 +69,7 @@ $pagination-hover-bg:                  $yellow-lighter;
 }
 
 .table.table-default {
-    border: 1px solid #C9D3DD;
+    border: 1px solid $table-border-color;
     th {
         vertical-align: bottom;
         border-bottom: $table-border-width solid $table-border-color;
@@ -82,10 +83,10 @@ $pagination-hover-bg:                  $yellow-lighter;
     tr {
         &.active {
             background-color: $blue-lighter;
-            border: 1px solid #9ccef5;
+            border: 1px solid $teal;
             td {
-                border-top: 1px solid #9ccef5;
-                border-bottom: 1px solid #9ccef5;
+                border-top: 1px solid $teal;
+                border-bottom: 1px solid $teal;
             }
         }
     }

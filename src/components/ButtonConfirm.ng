@@ -1,0 +1,33 @@
+<template>
+    <div class="btn-group">
+        <button class="btn btn-secondary" ng-show="!$ctrl.showConfirm" ng-click="$ctrl.showConfirm = true" ng-transclude></button>
+        <div ng-show="$ctrl.showConfirm" class="btn-group" role="group" aria-label="Button confirm">
+            <button ng-click="$ctrl.showConfirm = false" type="button" class="btn btn-secondary">{{ $ctrl.textNo }}</button>
+            <button ng-click="$ctrl.confirm()" type="button" class="btn btn-danger">{{ $ctrl.textYes }}</button>
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        bindings: { 
+            onConfirm: '&?',  
+            onCancel: '&?',
+            textYes: '@?',
+            textNo: '@?'
+        },
+        transclude: true,
+        controller: class BtnConfirmCtrl {
+
+            $onInit () {
+                this.textYes = this.textYes || 'Sim'
+                this.textNo = this.textNo || 'Não'
+            }
+
+            confirm () {
+                this.onConfirm()
+            }
+
+        }
+    }
+</script>

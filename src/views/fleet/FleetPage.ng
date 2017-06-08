@@ -6,9 +6,10 @@
                     <button class="btn btn-success mr-2" ng-click="$ctrl.add()">
                         Novo Carro
                     </button>
-                    <button class="btn btn-secondary mr-2" ng-click="$ctrl.removeSelected()" ng-show="$ctrl.selected > 0">
+
+                    <button-confirm class="mr-2" on-confirm="$ctrl.removeSelected()" ng-show="$ctrl.selected > 0">
                         Excluir ({{ $ctrl.selected }})
-                    </button>
+                    </button-confirm>
                 </div>
                 <div class="input-group">
                     <input type="text" ng-model="$ctrl.search" class="form-control" placeholder="Pesquisar" aria-describedby="btnGroupAddon2">
@@ -90,7 +91,7 @@
                         <div class="col align-self-center">
                             <!-- @TODO Convert form to component [form-veiculo] -->
                             <form action="" name="veiculoForm">
-                                <div class="form-group row" ng-class="{ 'has-danger' : veiculoForm.placa.$invalid && !veiculoForm.placa.$pristine }">
+                                <div class="form-group row" ng-class="{'has-danger': veiculoForm.placa.$invalid && !veiculoForm.placa.$pristine }">
                                     <label for="placa" class="col-3 col-form-label">Placa</label>
                                     <div class="col-9">
                                         <input ng-model="$ctrl.veiculo.placa" ng-class="{ 'form-control-danger' : veiculoForm.placa.$invalid && !veiculoForm.placa.$pristine }" ui-br-car-plate-mask ng-required="true" class="form-control form-control-danger" type="text" value="" id="placa" name="placa">
@@ -147,23 +148,25 @@
 </template>
 
 <script>
+
+    import buttonConfirm from 'components/ButtonConfirm'
     import actionHeader from 'components/ActionHeader'
     import showImage from 'components/ShowImage'
     import toggle from 'components/Toggle'
     import paging from 'components/Paging'
-    import modal from 'components/Modal'
 
     import { forEach } from 'lodash'
 
     export default {
-        components: { actionHeader, showImage, toggle, paging, modal },
+        components: { actionHeader, showImage, toggle, paging, buttonConfirm },
         controller: class FleetPageCtrl {
-            constructor ($scope, store, flux) 
+            constructor ($scope, store, flux, Notification) 
             {
-                this.$inject = ['$scope', 'store', 'flux']
+                this.$inject = ['$scope', 'store', 'flux', 'Notification']
 
                 this.store = store
                 this.flux = flux
+                this.Notification = Notification
 
                 this.selected = 0
 
@@ -237,6 +240,8 @@
 
                 // close modal
                 $('#veiculoModal').modal('hide')
+
+                this.Notification.success('Veiculo salvo com sucesso!')
             }
 
             add () 
@@ -253,6 +258,8 @@
             remove (veiculo) 
             {
                 this.flux.dispatch('fleet/REMOVE', veiculo)
+
+                this.Notification.success('Veiculo removido com sucesso!')
             }
         }
     }
