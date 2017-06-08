@@ -27,4 +27,20 @@
     .custom-control-indicator {
         border: 1px solid #ddd
     }
+
+    .custom-checkbox .custom-control-input:checked ~ .custom-control-indicator {
+        background-image: url(~assets/checkbox.svg);
+        background-size: contain;
+    }
+
+    .custom-control-input:checked ~ .custom-control-indicator {
+        color: #777;
+        background-color: #fff;
+        border: 1px solid #9ccef5;
+    }
+
+    .custom-control-input:focus ~ .custom-control-indicator {
+        box-shadow: none;
+        border: 1px solid #9ccef5;
+    }
 </style>
