@@ -21,5 +21,6 @@ npm run build --report
 For detailed explanation on how things work, checkout the [guide](https://github.com/projecao/ng-webpack-template) and [docs for ng-loader](https://github.com/owen-it/ng-loader).
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/anteriovieira/challenge-contaazul/master/static/image/phone.gif">
+    <img src="https://raw.githubusercontent.com/anteriovieira/challenge-contaazul/master/static/image/phone-1.gif">
+    <img src="https://raw.githubusercontent.com/anteriovieira/challenge-contaazul/master/static/image/phone-2.gif">
 </p>
